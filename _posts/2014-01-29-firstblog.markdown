@@ -44,9 +44,12 @@ tags:
 大的 Jekyll 主题上直接 fork 了 Clean Blog（这个主题也相当有名，就不多赘述了。唯一的缺点大概就是没有标签支持，于是我给它补上了。）
 
 本地调试环境需要 `gem install jekyll`，结果 rubygem 的源居然被墙了……后来手动改成了国内的镜像源才成功:
-* <code>gem sources --add http://gems.ruby-china.org/</code>
-* <code>gem sources --remove https://rubygems.org/</code>
-* <code>gem install bundler</code>
+
+```
+gem sources --add http://gems.ruby-china.org/
+gem sources --remove https://rubygems.org/
+gem install bundler
+```
 
 Theme 直接在 [Jekyll Themes](jekyllthemes.org/)里面找就行了，不过之前找的都不太好，后来在知乎里面看到了这个模板，于是乎就用上了，很靠谱。
 
@@ -55,5 +58,3 @@ Theme 直接在 [Jekyll Themes](jekyllthemes.org/)里面找就行了，不过之
 博客编写使用过Sublime Text、Markdown Pad和Atom，用过之后果断选择了Atom，狂拽酷炫叼炸天啊，以后发量子相关的博客还要用到mathType这些工具。
 
 ——cailang.X 2016-10
-
-
