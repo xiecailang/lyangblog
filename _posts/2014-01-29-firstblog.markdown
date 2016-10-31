@@ -13,13 +13,13 @@ tags:
 > “Yeah It's on. ”
 
 
-##写在前面
+# 写在前面
 
 我们的blog就这么开通了，花了大概两天的时间来搭建框架和申请域名,使用的是Hux大神的Theme，这是第一篇blog，以后我们（L.Y）将会一直不定期更新我们的blog，Y主要是写工作上的项目（大部分就是code啦），L主要是写量子信息方面的理解和感悟，希望我们能坚持下去，加油!
 
 ---
 
-##GitHub pages + jekyll建立自己的博客
+# GitHub pages + jekyll建立自己的博客
 
 接下来说说搭建这个博客的步骤。  
 
@@ -53,7 +53,7 @@ gem install bundler
 
 Theme 直接在 [Jekyll Themes](jekyllthemes.org/)里面找就行了，不过之前找的都不太好，后来在知乎里面看到了这个模板，于是乎就用上了，很靠谱。
 
-##博客编写
+# 博客编写
 
 博客编写使用过Sublime Text、Markdown Pad和Atom，用过之后果断选择了Atom，狂拽酷炫叼炸天啊，以后发量子相关的博客还要用到mathType这些工具。
 
