@@ -4,7 +4,7 @@ title:      "MVC5 学习笔记（1）"
 subtitle:   " \"初窥MVC5\""
 date:       2016-10-31 12:00:00
 author:     "Yang"
-header-img: "img/post-bg-2016.jpg"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/post-bg-2016.jpg?x-oss-process=image"
 catalog: true
 tags:
     - Tech

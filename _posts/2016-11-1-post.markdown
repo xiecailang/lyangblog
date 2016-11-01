@@ -4,7 +4,7 @@ title:      "博客标题解析带‘#’的问题"
 subtitle:   " \"开动脑筋\""
 date:       2016-10-31 10:00:00
 author:     "cailang.X"
-header-img: "img/post-bg-2016-11-1.jpg"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/2016-11-1-bg.png?x-oss-process=image"
 catalog: true
 tags:
     - Tech

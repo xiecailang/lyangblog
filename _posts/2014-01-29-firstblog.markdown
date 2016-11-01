@@ -4,7 +4,7 @@ title:      "第一篇博客"
 subtitle:   " \"我们的博客开通啦！\""
 date:       2016-10-28 12:00:00
 author:     "cailang.X"
-header-img: "img/post-bg-2015.jpg"
+header-img: http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/post-bg-2015.jpg?x-oss-process=image"
 catalog: true
 tags:
     - 生活
