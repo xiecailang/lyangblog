@@ -1,0 +1,100 @@
+---
+layout:     post
+title:      "MVC5 学习笔记（1）"
+subtitle:   " \"初窥MVC5\""
+date:       2016-10-28 12:00:00
+author:     "Yang"
+header-img: "img/post-bg-2016.jpg"
+catalog: true
+tags:
+    - Tech
+---
+
+# 前言
+
+一直以来都是不断的看书、看博客、看代码，很少有静下来整理自己思绪的时候。嘿嘿，感谢lang同学，百忙之中布置了这个温馨的“家”（刚看到的时候真的好兴奋、好激动），so，懒洋洋也要开始码字，记录码媛生涯啦！
+
+---
+
+# ASP.NET MVC
+学校里有C语言的基础，了解过一些Java，lang同学也给我灌输过一些面向对象的思维，所以我对C#的接受程度还算可以。
+
+
+ASP.NET是一种高效、简单的脚本语言，简化了Web编程。而MVC(Model View Controller)则是其经典的一个框架，
+一般的步骤是
+1. 获取控制器
+2. 基于控制器，创建Model对象，Model可转换调用数据访问层
+3. 数据填充Model后，传递到View显示层，在界面上显示
+
+## Controller
+
+我觉得控制器中主要是要实现的是“动作”，即用户交互，对用户的“动作”进行回馈。每个Controller都能够自动生成同名的View文件，可用来显示这个Controller的界面。
+
+```
+public ActionResult GetView()
+{
+    return View("MyView");
+}
+```
+
+
+<code>return View</code>即跳转到名称为“MyView”的View。
+
+## View
+
+在MVC5中，Controller与View之间的值传递[即，前后台传值]有多种形式。
+## 前台传值给后台
+
+
+### Model Binding
+
+* Form
+
+最常用的是Form表单形式。在View中通过表单Submit。
+
+View中：
+
+```
+<form action="/home/getvalue" method="post">
+    <input type="text" name="username" />
+    <input type="text" name="age" />
+    <input type="submit" name="button" value="提交" />
+</form>
+```
+
+Controller中：
+
+第一种方式是最“笨拙”的方式，获取一个个变量。
+
+```
+public void GetValue()
+{
+    var name = Request["username"];
+    var age = Request["age"];
+    var btn = Request["button"];
+}
+```
+
+第二种方式是进阶版,初级强类型绑定，创建一个与Form表单对应的类。
+
+```
+public class User
+{
+    public string UserName { set; get; }
+    public int Age { set; get; }
+}
+```
+
+相应Controller传入的参数就是这个类。
+
+```
+public void GetValue(User user)
+{
+
+}
+```
+
+
+> 快十一点啦，我要洗洗睡了····明天还要上班呢~
+
+——Yang.Z 2016-10-31
