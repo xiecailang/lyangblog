@@ -1,0 +1,139 @@
+---
+layout:     post
+title:      "博客标题解析带‘#’的问题"
+subtitle:   " \"开动脑筋\""
+date:       2016-10-31 10:00:00
+author:     "cailang.X"
+header-img: "img/post-bg-2016-11-1.jpg"
+catalog: true
+tags:
+    - Tech
+---
+
+# Problem
+
+刚开始写的博客，标题在Atom中显示正常，但是用 **jekyll build** 以后标题自动带了一个“#”，开始以为是markdown解析器的问题，但是在 **_config.yml** 中配置的的确是：
+
+```xml
+markdown: kramdown
+kramdown:
+  input: GFM
+```  
+
+对比了一下GFM的语法发现标题格式并没有错误，所以，应该不是解析器的问题。
+
+
+# What is the '#'
+
+那么问题来了，既然不是解析器，那这个'#'是个什么东东？
+
+用 <code>jekyll serve --watch</code> 调试，在浏览器中 **F12** 查看界面元素，发现了这个‘#’:
+
+```html
+<a class="anchorjs-link "
+  style="padding-left: 0.37em; opacity: 1;" aria-label="Anchor link for: section"
+  href="#section"
+  data-anchorjs-icon="#"></a>
+```
+
+
+yeah，就是这个 **data-anchorjs-icon="#"** ，与之相关的还有
+
+```html
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+```
+
+# Who brought the '#'
+
+上面定位到的script和style都是在 **_sites** 里面的，都是编译好的，所以应该是模板生成的，因为一开始对jekyll的框架不是很熟悉，所以并没有很快定位到是哪个文件，那么，作为一个Coder，有问题当然是用代码来解决了，于是用VS2015写了一个遍历，查找的小段代码
+
+```csharp
+static void Main(string[] args)
+        {
+            Console.WriteLine("开始分析");
+            readfile(@"C:\Users\38116\Documents\GitHub\lyangblog");            
+            Console.ReadKey();
+        }
+
+        public static void readfile(string path)
+        {
+            if (File.Exists(path))
+            {
+                // 是文件
+                FileInfo fi = new FileInfo(path);
+                FileStream fs = File.OpenRead(fi.FullName);
+                StreamReader sr = new StreamReader(fs);
+                string str = "";
+                Console.WriteLine("正在分析:" + fi.FullName);
+                while ((str = sr.ReadLine()) != null)
+                {
+                    if (str.Contains("anchorjs-link"))
+                    {
+                        Console.WriteLine("发现"+fi.FullName);
+                        Console.ReadKey();
+                        break;
+                    }
+                    if (str.Contains("anchors"))
+                    {
+                        Console.WriteLine("发现"+fi.FullName);
+                        Console.ReadKey();
+                        break;
+                    }
+
+                }
+
+            }
+            else if (Directory.Exists(path))
+            {
+                // 是文件夹
+                DirectoryInfo di = new DirectoryInfo(path);
+                foreach (DirectoryInfo item in di.GetDirectories())
+                    readfile(item.FullName);
+
+                foreach (FileInfo fi in di.GetFiles())
+                {
+                    readfile(fi.FullName);
+                }
+
+            }
+        }
+    }
+```
+运行起来以后，定位到了 **_layouts** 文件夹下面的两个文件，一个是 **keynot.html**,一个是 **post.html** ，调试以后，确定将 **post.html** 中的一段代码改成:
+
+```html
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: ''
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+```
+
+没错，原来是 **icon:'#'** ，删掉了这个#，于是乎，**build** 以后烦人的'#'就消失不见了，nice。
+
+

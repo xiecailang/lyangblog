@@ -30,7 +30,7 @@ ASP.NET是一种高效、简单的脚本语言，简化了Web编程。而MVC(Mod
 
 我觉得控制器中主要是要实现的是“动作”，即用户交互，对用户的“动作”进行回馈。每个Controller都能够自动生成同名的View文件，可用来显示这个Controller的界面。
 
-```
+```csharp
 public ActionResult GetView()
 {
     return View("MyView");
@@ -43,18 +43,14 @@ public ActionResult GetView()
 ## View
 
 在MVC5中，Controller与View之间的值传递[即，前后台传值]有多种形式。
+
 ## 前台传值给后台
-
-
-### Model Binding
-
-* Form
 
 最常用的是Form表单形式。在View中通过表单Submit。
 
-View中：
+ **View** 中：
 
-```
+```html
 <form action="/home/getvalue" method="post">
     <input type="text" name="username" />
     <input type="text" name="age" />
@@ -62,11 +58,11 @@ View中：
 </form>
 ```
 
-Controller中：
+ **Controller** 中：
 
 第一种方式是最“笨拙”的方式，获取一个个变量。
 
-```
+```csharp
 public void GetValue()
 {
     var name = Request["username"];
@@ -77,7 +73,7 @@ public void GetValue()
 
 第二种方式是进阶版,初级强类型绑定，创建一个与Form表单对应的类。
 
-```
+```csharp
 public class User
 {
     public string UserName { set; get; }
@@ -87,7 +83,7 @@ public class User
 
 相应Controller传入的参数就是这个类。
 
-```
+```csharp
 public void GetValue(User user)
 {
 
