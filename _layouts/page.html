@@ -8,13 +8,43 @@ layout: default
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
                 <div class="site-heading">
-                    <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+                    <span class="subheading">
+                        Bigan 21th Oct, 2013
+                    </span>
+                    <span class="subheading">
+                        We've been dating for
+                    </span>
+                    <br>
+                    <h1>
+                    <script language=Javascript> 
+                        var date = new Date();
+                        var y = date.getFullYear();
+                        var m = date.getMonth();
+                        var d = date.getDate();
+                         
+                        var endDate = '2013-10-21';
+                        var array = endDate.split("-");
+                        var endTime = new Date(parseInt(array[0]), parseInt(array[1]) - 1, parseInt(array[2]));
+                        var nowTime = new Date(parseInt(y), parseInt(m), parseInt(d));
+                        var day = (Number(nowTime) - Number(endTime)) / (1000 * 60 * 60 * 24);
+                        document.write(day) ;
+                        </script>
+                    </h1>
+                    <span class="subheading" style="font-size: 50px;color: #D1D1D1">DAYS</span>
+                    <!-- <h1>{% if page.title %}
+                    {{ page.title }}
+                    {% else %}
+                    {{ site.title }}
+                    {% endif %}</h1> -->
                     <!--<hr class="small">-->
-                    <span class="subheading">{{ page.description }}</span>
+                    <!-- <span class="subheading">{{ page.description }}</span> -->
+                    
                 </div>
             </div>
         </div>
+        
     </div>
+
 </header>
 
 <!-- Main Content -->
