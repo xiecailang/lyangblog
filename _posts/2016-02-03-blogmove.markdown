@@ -7,7 +7,7 @@ author:     "cailang.X"
 header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2015/move-post-bg.jpg?x-oss-process=image"
 catalog: true
 tags:
-    - Tec
+    - move
 ---
 # 定义Enum
 
