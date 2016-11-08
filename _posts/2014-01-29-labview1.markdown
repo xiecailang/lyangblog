@@ -1,0 +1,65 @@
+---
+layout:     post
+title:      "G语言之初体验"
+subtitle:   " \"Labview 2016！\""
+date:       2016-11-07 12:00:00
+author:     "cailang.X"
+header-img: http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/2016-11-07-post-bg.jpg?x-oss-process=image"
+catalog: true
+tags:
+    - Tec
+---
+
+
+# G语言
+
+G语言，也就是用图形（graphics）行来编程，因为马上需要做量子相关的系统，用到的编程语言就是G语言，IDE用的是labview，使用的是[labview2015](http://download.ni.com/evaluation/labview/ekit/other/downloader/2016LV-WinChn_downloader.exe
+),然后下个注册机就ok。使用的学习材料是《labview入门与实战开发100例》、《labview程序设计从入门到精通》。
+
+---
+
+# Labview项目结构
+
+以前一直使用的都是直接敲代码，刚接触Labview，感觉就四个字：简单粗暴。
+
+Labview包括前台设计和后台设计：
+
+![Labview前后台](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/pic1.png?x-oss-process=image")
+
+前后台分成两个窗口，可以并行设计，前台主要用到的控件(Controls)，有各种各样的，数字、字符串、数组、波形图、开关、按钮等等等等
+
+![Controls](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/pic2.png?x-oss-process=image")
+
+后台操作的是函数，还有数据，相当于把以前的编码转换成了图形，for、while、case都用图形来表示，还有各种各样的函数，包括封装好的信号滤波函数、矩阵运算函数、微积分、线性方程等等，我们要做的就是把参数丢进去，再把结果读出来。
+
+![Functions](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/pic3.png?x-oss-process=image")
+
+# Labiew的数据流动
+
+对于labiew工程来说，逻辑结构和数据流动是关键所在，如何合理的安排逻辑结构，使得数据流动通畅我觉得这个是首先要思考的，如下图：
+
+![Functions](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/pic4.png?x-oss-process=image")
+
+程序实现的功能是求出产生带高斯噪声的正弦波的中值、方差等等，这个我做的一个简单的实例，可以比较清楚的看到，正弦波形产生信号与高斯噪声相加后分别流向求中值、方差函数，然后将结果显示出来。在对Labview进行调试的时候，主要检测的也是数据流动，将调试灯点亮，可以看到数据在这张图上的流动情况。
+
+# Labview的模块化
+
+对于代码来讲，模块化都是用代码来实现的，将代码进行封装，相同的，Labview也可以进行封装，封装以后都是以.VI为后缀，其实后台用到的functions都是封装好的vi而已，而我们自己也可以定义一个vi，包括前台和后台，指定它的输入和输出，使用起来就跟使用functions是一样一样的。
+
+# 今天刚做的一个示波器例子
+
+是按照实例100里面做的第一个比较大的程序，包含了5-6个子vi
+
+前台
+
+![Functions](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/pic5.png?x-oss-process=image")
+
+后台
+
+![Functions](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/pic6.png?x-oss-process=image")
+
+# 总结
+
+学习了大概半个多月，感觉G语言还是比较适合专业的工程人员使用，只要专注于逻辑结构和数据流，开发周期也很短，容易上手，但是对我来说，如果要跟其他语言（C,C++,C#,JAVA）比较的话，G语言还是灵活性不够，有一些东西因为其本身语法的限制，实现起来比较麻烦，也有可能是我学的还不够，继续加油吧，争取两个礼拜学完，下周等NI板卡到了，直接可以连硬件调试了，nice！
+
+——cailang.X 2016-11
