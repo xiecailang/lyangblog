@@ -1,0 +1,52 @@
+---
+layout:     post
+title:      "[博客搬家]Android Studio+PhoneGap 环境搭建常见问题"
+subtitle:   " \"from csdn\""
+date:       2015-12-27 12:00:00
+author:     "cailang.X"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2015/move-post-bg.jpg?x-oss-process=image"
+catalog: true
+tags:
+    - Tec
+---
+
+# 没有代码的一篇
+
+今天在网上查找APP的开发框架，主要看了国内的WEBX5和国外的PHONEGAP，在WINDOWS下搭建phonegap的过程中遇到了不少问题，汇总一下
+
+步骤：
+
+1.安装Nodejs，新版的phonegap不像之前那种下载zip的方式了，使用npm安装
+
+2.在使用npm install -g phonegap的指令时，多次安装都失败了，网上找了解决方案，最终使用下面的方法解决了
+
+1）输入npm config set registry=http://registry.cnpmjs.org
+
+2）输入npm info underscore
+
+注：步骤2转自《npm镜像使用方法》
+
+3.再次输入npm install -g phonegap，如果出现权限问题安装失败，可以以管理员的方式打开CMD命令提示工具
+
+4.新建phonegap工程
+
+1）使用cd指令转到需要创建工程的目录下
+
+2）输入phonegap create projectname
+
+3）输入cd projectname转到工程目录下
+
+4）输入phonegap run android，在工程目录中的platforms中会生成android目录
+
+5.将工程导入到Android studio中
+
+1）打开Android studio,进入Import project
+
+2）注意项目目录要一直选择到platforms的android目录中，后面全部next即可
+
+3）在gradle的过程中出现速度很慢的情况，可以参考《android studio 创建项目一直停留在building gradle project info》，虽然我并没找到相关设置，只是重新强制关闭AS ，再重启以后即可
+
+6.最后运行成功啦
+![这里写图片描述](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2015/pic6.jpg?x-oss-process=image)
+
+——cailang.X 2016-11

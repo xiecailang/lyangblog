@@ -4,7 +4,7 @@ title:      "G语言之初体验"
 subtitle:   " \"Labview 2016！\""
 date:       2016-11-07 12:00:00
 author:     "cailang.X"
-header-img: http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/2016-11-07-post-bg.jpg?x-oss-process=image"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-7/2016-11-07-post-bg.jpg?x-oss-process=image"
 catalog: true
 tags:
     - Tec

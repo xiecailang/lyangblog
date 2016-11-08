@@ -1,0 +1,83 @@
+---
+layout:     post
+title:      "[博客搬家]WPF DataGridComboBox绑定enum"
+subtitle:   " \"from csdn\""
+date:       2016-02-03 12:00:00
+author:     "cailang.X"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2015/move-post-bg.jpg?x-oss-process=image"
+catalog: true
+tags:
+    - Tec
+---
+# 定义Enum
+
+```csharp
+public enum Types
+    {
+        不变, 随机, 波动
+    }
+```
+# 前台代码
+
+```html
+<Window.Resources>
+        <ObjectDataProvider x:Key="myEnum" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local:Types"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+```
+
+```html
+<DataGrid Name="dg_render"  Margin="0,20,20,0" MinWidth="250px" CanUserAddRows="False" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <!--省略其他-->
+                    <DataGridComboBoxColumn Header="类型" SelectedValueBinding="{Binding Type}" ItemsSource="{Binding Source={StaticResource myEnum}}">                 
+                    </DataGridComboBoxColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+```
+注意将Type类的命名空间引入到xaml中。
+# 后台数据绑定
+
+ 1. 绑定DataGrid
+
+
+```csharp
+ocr = new ObservableCollection<RenderHelper>();
+...
+this.dg_render.ItemsSource = ocr;
+```
+
+ 2. 编写RenderHelper类
+
+
+```csharp
+class RenderHelper: INotifyPropertyChanged
+{
+public event PropertyChangedEventHandler PropertyChanged;
+private Types type;
+public Types Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Type"));
+                }
+            }
+        }
+        ...
+}
+```
+# 运行效果
+![这里写图片描述](http://img.blog.csdn.net/20160203095719382)
+
+——cailang.X 2016-11
