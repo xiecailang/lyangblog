@@ -41,12 +41,117 @@ layout: default
                     <h2 class="subheading">{{ page.subtitle }}</h2>
                     {% comment %} endif {% endcomment %}
                     <span class="meta">Posted by {% if page.author %}{{ page.author }}{% else %}{{ site.title }}{% endif %} on {{ page.date | date: "%B %-d, %Y" }}</span>
+                    
                 </div>
             </div>
         </div>
     </div>
 </header>
+{% for tag in page.tags %}
+    {% if{{tag}} == 'Music'%}
+    <link rel="stylesheet" href="/css/lanrenzhijia.css" type="text/css" />
+    <div class="music-player">
+      <div class="info">
+        <div class="left">  </div>
+        <div class="center">
+          <div class="jp-playlist">
+            <ul>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+        <div class="right">  </div>
+        <div class="progress jp-seek-bar"> <span class="jp-play-bar" style="width: 0%"></span> </div>
+      </div>
+      <div class="controls">
+    <div class="current jp-current-time">00:00</div>
+    <div class="play-controls"> 
+        <a href="javascript:;" class="icon-previous jp-previous" title="previous"></a> 
+        <a href="javascript:;" class="icon-play jp-play" title="play"></a> 
+        <a href="javascript:;" class="icon-pause jp-pause" title="pause"></a> 
+        <a href="javascript:;" class="icon-next jp-next" title="next"></a> 
+     </div>
+    <div class="volume-level jp-volume-bar"> 
+        <span class="jp-volume-bar-value" style="width: 0%"></span> 
+            <a href="javascript:;" class="icon-volume-up jp-volume-max" title="max volume"></a> 
+            <a href="javascript:;" class="icon-volume-down jp-mute" title="mute"></a> 
+    </div>
+  </div>
+      <div id="jquery_jplayer" class="jp-jplayer"></div>
+    </div>
+    <script src="/js/jquery.min.js"></script>
+    <script src='/js/jquery.jplayer.min.js'></script>
+    <script src='/js/jplayer.playlist.min.js'></script>
+    <script>
+          $(document).ready(function(){
+            var titles = new Array();
+            {% for  title in page.music-titles %}
+                titles.push("{{title}}");
+            {% endfor %}
 
+            var artists = new Array();
+            {% for  art in page.music-artists %}
+                artists.push("{{art}}");
+            {% endfor %}
+
+            var links = new Array();       
+            {% for  lin in page.music-links %}
+                links.push("{{lin}}");
+            {% endfor %}
+
+
+            var posts = new Array();       
+            {% for  pos in page.music-posts %}
+                posts.push("{{pos}}");
+            {% endfor %}
+
+            var playlist = new Array();
+            for(var i =0;i<titles.length;i++){
+                playlist.push({
+                    title:titles[i],
+                    artist:artists[i],
+                    mp3:links[i],
+                    poster:posts[i]
+                })
+            }
+          /*var playlist = [{
+              title:"Hidden",
+              artist:"Miaow",
+              mp3:"http://demo.lanrenzhijia.com/2014/music0917/images/i1.mp3",
+              //oga:"http://www.jplayer.org/audio/ogg/Miaow-02-Hidden.ogg",
+              
+            },{
+              title:"Cro Magnon Man",
+              artist:"The Stark Palace",
+              mp3:"http://demo.lanrenzhijia.com/2014/music0917/images/i2.mp3",
+              //oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg",
+              poster: "http://33.media.tumblr.com/bf9dc125a47dcca91ce5b3575bc3ba92/tumblr_nbmb3j8nU51sq3g2zo1_500.png"
+            },{
+              title:"Bubble",
+              m4a: "http://www.jplayer.org/audio/m4a/Miaow-07-Bubble.m4a",
+              oga: "http://www.jplayer.org/audio/ogg/Miaow-07-Bubble.ogg",
+              poster: "http://31.media.tumblr.com/810b1125a8b9e9f192d009ef58dceb07/tumblr_nbe8wsmKuz1rknpqyo1_500.jpg"
+          }];*/
+          
+
+          var cssSelector = {
+            jPlayer: "#jquery_jplayer",
+            cssSelectorAncestor: ".music-player"
+          };
+          
+          var options = {
+            swfPath: "http://cdnjs.cloudflare.com/ajax/libs/jplayer/2.6.4/jquery.jplayer/Jplayer.swf",
+            supplied: "ogv, m4v, oga, mp3"
+          };
+          
+          var myPlaylist = new jPlayerPlaylist(cssSelector, playlist, options);
+          
+        });
+        </script>
+
+        {% break %}
+    {% endif %}
+{% endfor %}
 <!-- Post Content -->
 <article>
     <div class="container">
@@ -57,8 +162,12 @@ layout: default
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 post-container">
-
-				{{ content }}
+                {{ content }}
+                <!-- 是否为音乐分享 -->
+                    
+                <!--  -->
+    
+				
 
                 <hr style="visibility: hidden;">
 

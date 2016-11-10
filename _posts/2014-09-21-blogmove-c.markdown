@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "[博客搬家][技术文章搬家]华为oj挑战赛八皇后问题思考"
+title:      "[博客搬家]华为oj挑战赛八皇后问题思考"
 subtitle:   " \"from csdn\""
 date:       2014-09-21 12:00:00
 author:     "cailang.X"
