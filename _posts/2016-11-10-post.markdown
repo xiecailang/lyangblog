@@ -1,0 +1,175 @@
+---
+layout:     post
+title:      "可以听的博客"
+subtitle:   " \"在blog中使用播放器\""
+date:       2016-11-10 10:00:00
+author:     "cailang.X"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-11/68bOOOPIC35.jpg"
+catalog: true
+tags:
+    - Tech
+---
+
+# 灵感
+
+昨天下午正在用陌生人妻听歌，每每听到好听的歌就想着要分享出来，于是乎问题来了，我怎么能在这个博客中分享音乐呢？
+
+# 思路
+
+首先博客用 **markdown** 写的，而它又刚好支持 **HTML5** 标签，那是否可以直接用 **audio** 来实现呢？尝试使用这种方法，最后并没有成功，因为
+
+* 自带播放器，好丑
+* 每次发都要写一堆的html
+* 没找到好的办法
+
+随后，我又想到我们的的博客使用 **jekyll** 模板生成的，那直接在模板里面写一个播放器不就完美了么，*yeah*
+
+# 准备工作
+
+首先，找一个自己喜欢的播放器模板，[这里](http://www.ithome.com/html/it/195970.htm)有7款风格不一样的音乐播放器，我选了这个
+
+![](http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-11/player.png)
+
+美炸了有木有！
+
+OK，下载源码研究研究，其实很简单，整个demo包括了
+
+- css
+- img
+- js
+- index.html
+
+这几个文件夹和文件，就是说，将这些东西直接copy到我的blog项目里面就ok了，然后把 **index.html** 里面关于播放器的内容加到 **post** 模板里面就行了。
+
+# 搞起来
+
+复制 **css、img、js** 里面的内容到blog项目相应的文件夹下。
+
+找到项目中的 **post** 模板，即 **_layouts->post.html** 在 **\{\{content\}\}** 插入播放器代码
+
+```html
+<link rel="stylesheet" href="/css/lanrenzhijia.css" type="text/css" />
+    <div class="music-player">
+      <div class="info">
+        <div class="left">  </div>
+        <div class="center">
+          <div class="jp-playlist">
+            <ul>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+        <div class="right">  </div>
+        <div class="progress jp-seek-bar"> <span class="jp-play-bar" style="width: 0%"></span> </div>
+      </div>
+      <div class="controls">
+    <div class="current jp-current-time">00:00</div>
+    <div class="play-controls">
+        <a href="javascript:;" class="icon-previous jp-previous" title="previous"></a>
+        <a href="javascript:;" class="icon-play jp-play" title="play"></a>
+        <a href="javascript:;" class="icon-pause jp-pause" title="pause"></a>
+        <a href="javascript:;" class="icon-next jp-next" title="next"></a>
+     </div>
+    <div class="volume-level jp-volume-bar">
+        <span class="jp-volume-bar-value" style="width: 0%"></span>
+            <a href="javascript:;" class="icon-volume-up jp-volume-max" title="max volume"></a>
+            <a href="javascript:;" class="icon-volume-down jp-mute" title="mute"></a>
+    </div>
+  </div>
+      <div id="jquery_jplayer" class="jp-jplayer"></div>
+    </div>
+    <script src="/js/jquery.min.js"></script>
+    <script src='/js/jquery.jplayer.min.js'></script>
+    <script src='/js/jplayer.playlist.min.js'></script>
+```
+
+和 **jekyll** 博客的头信息结合起来，当Tags包含了 **Music** 的时候显示播放器，并且，在博客头信息里面的添加跟音乐相关的数组：**歌曲名称，演唱者，链接，背景图片**
+
+判断 **Tags** 是否存在 **Music**
+```text
+{ % for tag in page.tags % }
+    { % if { {tag } } == 'Music' % }
+      <!-- 显示音乐播放器 -->
+      { % break % }
+    { % endif % }
+{ % endfor % }
+```
+
+新建歌曲相关数组变量
+```
+music-titles:  
+      - ""  
+      - ""  
+      - ""
+music-artists:
+      - ""
+      - ""
+      - ""
+music-links:
+- ""
+- ""
+- ""
+
+music-posts:
+- ""
+- ""
+- ""
+tags:
+    - Music
+```
+
+将变量加载到播放器列表里面
+```javascript
+<script>
+          $(document).ready(function(){
+            var titles = new Array();
+            { % for  title in page.music-titles % }
+                titles.push("{{title}}");
+            { % endfor % }
+
+            var artists = new Array();
+            { % for  art in page.music-artists % }
+                artists.push("{{art}}");
+            { % endfor % }
+
+            var links = new Array();       
+            { % for  lin in page.music-links % }
+                links.push("{{lin}}");
+            { % endfor % }
+
+
+            var posts = new Array();       
+            { % for  pos in page.music-posts % }
+                posts.push("{{pos}}");
+            { % endfor % }
+
+            var playlist = new Array();
+            for(var i =0;i<titles.length;i++){
+                playlist.push({
+                    title:titles[i],
+                    artist:artists[i],
+                    mp3:links[i],
+                    poster:posts[i]
+                })
+            }      
+          var cssSelector = {
+            jPlayer: "#jquery_jplayer",
+            cssSelectorAncestor: ".music-player"
+          };
+
+          var options = {
+            swfPath: "http://cdnjs.cloudflare.com/ajax/libs/jplayer/2.6.4/jquery.jplayer/Jplayer.swf",
+            supplied: "ogv, m4v, oga, mp3"
+          };
+
+          var myPlaylist = new jPlayerPlaylist(cssSelector, playlist, options);
+
+        });
+</script>
+```
+
+完成了这些步骤以后，发布博客就可以听歌啦。
+
+# 还有些小bug
+
+运行出来以后，发现播放器的格式不对，进度条位置、音量位置等等都有问题，猜测是被原来的 **css** 影响的，但是具体不是一下能定位到，于是在 **IExpoler** 里面 **F12** 进行调试。 通过取消相关的样式勾选，直到播放器显示正常即可，然后在播放的 **demo** 里面的css重新定义这些样式就OK了，大功告成~~[先来听几首歌吧](http://lyang.tech/2016/11/09/post-music/)！
