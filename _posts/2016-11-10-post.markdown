@@ -86,40 +86,42 @@ OK，下载源码研究研究，其实很简单，整个demo包括了
 和 **jekyll** 博客的头信息结合起来，当Tags包含了 **Music** 的时候显示播放器，并且，在博客头信息里面的添加跟音乐相关的数组：**歌曲名称，演唱者，链接，背景图片**
 
 判断 **Tags** 是否存在 **Music**
-```text
-{ % for tag in page.tags % }
-    { % if { {tag } } == 'Music' % }
-      <!-- 显示音乐播放器 -->
-      { % break % }
-    { % endif % }
-{ % endfor % }
+
+```
+{ % for tag in page.tags % }  
+    { % if { {tag } } == 'Music' % }  
+      <!-- 显示音乐播放器 -->  
+      { % break % }  
+    { % endif % }  
+{ % endfor % }   
 ```
 
 新建歌曲相关数组变量
 ```
-music-titles:  
+music-titles:      
+      - ""     
+      - ""     
+      - ""   
+music-artists:  
       - ""  
       - ""  
-      - ""
-music-artists:
-      - ""
-      - ""
-      - ""
-music-links:
-- ""
-- ""
-- ""
+      - ""  
+music-links:  
+- ""  
+- ""  
+- ""  
 
-music-posts:
-- ""
-- ""
-- ""
-tags:
-    - Music
+music-posts:  
+- ""  
+- ""  
+- ""  
+tags:  
+    - Music  
 ```
 
 将变量加载到播放器列表里面
-```javascript
+
+```js
 <script>
           $(document).ready(function(){
             var titles = new Array();
@@ -163,9 +165,8 @@ tags:
           };
 
           var myPlaylist = new jPlayerPlaylist(cssSelector, playlist, options);
-
         });
-</script>
+  </script>
 ```
 
 完成了这些步骤以后，发布博客就可以听歌啦。
