@@ -1,0 +1,257 @@
+---
+layout:     post
+title:      "MVC5 学习笔记(2)"
+subtitle:   " \"MVC的探索2\""
+date:       2016-11-13 9:13:00
+author:     "Yang.Z"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-14/d7be10d0402475e88ae175bddc705a3917b12f92.jpg"
+catalog: true
+tags:
+    - Tech
+---
+
+# 接上篇
+[上篇](http://lyang.tech/2016/10/31/yang/)讲到MVC5中，View向Controller中传值的方法有：
+
+
+* Model Binding
+   (*A. Form
+   B. 使用和Action参数同名的变量进行传递*)
+* QueryString
+* RouteData
+* Cookie
+
+---
+
+## QueryString
+查询字符串，通过URL的形式传参。还没怎么用过，先记录下。
+
+View端：
+
+```html
+<div>
+    <button id="btn">提交</button>
+</div>
+<script>
+    $(function () {
+        $('#btn').click(function () {
+            //url不区分大小写
+            location.href = "/home/getvalue?method=querystring";
+        });
+    });
+</script>
+```
+
+Controller端： Request属性可用来获取querystring,form表单以及cookie中的值
+
+```csharp
+public void GetValue()
+{
+
+    var querystring = Request["method"];
+}
+```
+
+点击提交按钮后浏览器地址栏中的地址：
+
+<code>http://localhost:57625/home/getvalue?method=querystring。</code>
+
+## RouteData
+
+路由的配置[位置：App_Start/RouteConfig]一般是：
+
+```csharp
+routes.MapRoute(
+    name: "Default",
+    url: "{controller}/{action}/{id}"
+);
+```
+
+View:
+
+```html
+<div>
+    <button id="btn">提交</button>
+</div>
+<script>
+    $(function () {
+        $('#btn').click(function () {
+            //url不区分大小写
+            location.href = "/home/getvalue/50";
+        });
+    });
+</script>
+```
+
+Controller获得object:
+
+```csharp
+public void GetValue()
+{
+    var value = RouteData.Values["id"];
+}
+```
+or 直接传入ID
+
+```csharp
+public void GetValue(int id)
+{
+
+}
+```
+
+
+## Cookie
+
+使用jquery.cookie插件操作。*没怎么用过*
+
+```html
+<body>
+    <button id="btn">提交</button>
+    <script>
+        $(function () {
+            //向cookie中写入值
+            $.cookie('key', 'jscookie');
+
+            $('#btn').click(function () {
+                location.href = "/home/getvalue";
+            });
+        })
+    </script>
+</body>
+```
+
+Controller端:
+
+```csharp
+public void GetValue()
+{
+    var cookie = Request["key"];
+}
+```
+
+
+
+# Controller传值给View
+
+Controller和View运行在同一个进程中。传递数据的经典方式有：
+
+* 单数值传递（return View(num)->View端@model）
+* 匿名类型
+* ViewDataDictionary
+* ViewData (ViewData["MyData"]="Hello";)
+* ViewBag
+* ViewModel
+
+## 匿名类型
+
+Controller端,使用Newtonsoft将匿名类型转换为json格式,
+使用NuGet引入Newtonsoft.Json包····[这个是参考别人的博客，我木有用过](http://www.cnblogs.com/Cwj-XFH/p/5877204.html#querystring)
+
+```csharp
+public ActionResult Index()
+{
+    string json = JsonConvert.SerializeObject(new { UserName = "洋", Age = 25 });
+    //也可以直接序列化JSON格式的字符串
+    //dynamic jsonObj = JsonConvert.DeserializeObject("{ UserName : \"雪飞鸿\", Age : 24 }");
+    dynamic jsonObj = JsonConvert.DeserializeObject(json);
+    return View(jsonObj);
+}
+```
+
+or 使用ExpandoObject类型对象来替代匿名类型。
+
+```csharp
+public ActionResult Index()
+{
+    dynamic user = new ExpandoObject();
+    user.UserName = "洋";
+    user.Age = 25;
+    return View(user);
+}
+```
+
+View端：
+
+```html
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <p>用户名：@Model.UserName</p>
+    <p>年龄：@Model.Age</p>
+</body>
+</html>
+```
+
+## ViewBag
+
+ 是动态类型，允许指定任何属性名称，向View传递数据。
+Controller端：
+
+```csharp
+public ActionResult PassingData()
+{
+ViewBag.MyData="Hello from the controller";
+return View();
+}
+```
+
+在View端，定义对应的Viewbag
+
+```html
+<div>
+  <div>@ViewBag.MyData</div>
+</div>
+```
+
+## ViewModel
+
+通过视图模型Model强类型绑定，传递到前端。
+
+Model端：
+
+```csharp
+public class User
+{
+    public string UserName { set; get; }
+    public int Age { set; get; }
+}
+```
+
+Controller端：
+
+```csharp
+public ActionResult Index()
+{
+    User user = new User() { UserName = "洋", Age = 25};
+    return View(user);
+}
+```
+
+View端设置为强类型绑定：
+
+```html
+@model DataTransfer.Controllers.User
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    <p>用户名：@Model.UserName</p>
+    <p>年龄：@Model.Age</p>
+</body>
+</html>
+```
+
+
+> 最近上班有点忙，要去现场····偶是个可怜的娃···
+
+——Yang.Z 2016-11-14
