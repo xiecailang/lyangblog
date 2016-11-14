@@ -2,7 +2,7 @@
 layout:     post
 title:      "MVC5 学习笔记(2)"
 subtitle:   " \"MVC的探索2\""
-date:       2016-11-13 9:13:00
+date:       2016-11-13 09:13:00
 author:     "Yang.Z"
 header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2016/11-14/d7be10d0402475e88ae175bddc705a3917b12f92.jpg"
 catalog: true
