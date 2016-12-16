@@ -1,24 +1,26 @@
 /* 代码整理：懒人之家 www.lanrenzhijia.com */
-*{ margin:0; padding:0; list-style:none;}
+*{ }
 *, *:before, *:after {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 html {
-	min-height: 100%;
-	font-size: 20px;
+
 }
 body {
 	
 	background-size: cover;
-	line-height:1.2;
-	font-size: 20px;
+	
 
 	font-family: "Open Sans", sans-serif;
 }
 
 .music-player {
+	padding:0;
+	margin:0;  list-style:none;
 	position: relative;
+	line-height:1.2;
+	font-size: 20px;
 	width: 350px;
 	height: 290px;
 	margin: 50px auto;
@@ -53,6 +55,7 @@ body {
 	display: none;
 }
 .music-player .info .jp-playlist li a {
+
 	font-size: 30px;
 	font-weight: 300;
 	text-decoration: none;
