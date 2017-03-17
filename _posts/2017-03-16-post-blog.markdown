@@ -1,0 +1,73 @@
+---
+layout:     post
+title:      "论文撰写注意事项"
+subtitle:   " \"第一篇论文小结\""
+date:       2017-03-16 10:00:00
+author:     "cailang.X"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0317/20170317.jpg"
+catalog: true
+tags:
+    - 学术
+---
+
+# 文
+
+* 整体结构逻辑清晰（先定框架再下笔）
+* 每两句话中间都需要有关系，用连词链接，避免出现与上下文无关的单独句子
+* 特别注意the和a的用法
+* 每句话都要有信息量，尽量少用“总所周知”、“以上内容”等含糊的语句
+* 尽量使用短句
+* 每段话第一句尤为重要，是每段的中心
+* 加空格情况：每个标点符号后、括号前后
+* 变量用斜体，其他用正体
+* 引用格式："Eq.~(\\ref)"、"Fig.~\\ref"、"Sec.~\\ref"、"Table~\\ref"
+* 其他细节如单复数、时态
+
+# 图
+
+* 图尽量紧凑，流程清楚易懂
+* 简约，渐少不必要的标识和装置
+* 仿真图的字体大小与原文相符，参数过多要考虑分开讨论
+* 每张图都要表达论文的主旨，不做无意义的比较
+* 同类型多张图可以做一张排版
+* 排版常规步骤：**多图：matlab-png-visio-pdf-裁剪**、**单图：matlab-pdf-裁剪**
+* matlab仿真相关指令
+
+```Text
+%双y轴
+[AX,H1,H2]=plotyy(x,y1,y2);
+set(get(AX(1),'Ylabel'),'String','y1 title');
+set(get(AX(2),'Ylabel'),'String','y2 title');
+set(AX(2),'FontSize',14);
+set(AX(2),'YLim',[0 1]);
+set(AX(2),'YTick',0:1:1);
+%子图排版
+subplot(m,n,p);
+%任意位置画图中图
+axes('position',[x y width hight])
+%变量
+\it %斜体
+\rm %正体
+```
+
+#公式
+
+* 公式排版 align* ：&对齐；//换行
+
+#表
+
+* 参数过多直接用表格列出，tex格式
+
+```Text
+\begin{table}
+  \caption{\label{ref}
+
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{cc}
+      \textrm{h1}&\textrm{h2}\\
+      value1&value2
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
+```
