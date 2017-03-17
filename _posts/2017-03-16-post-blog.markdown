@@ -50,11 +50,11 @@ axes('position',[x y width hight])
 \rm %正体
 ```
 
-#公式
+# 公式
 
 * 公式排版 align* ：&对齐；//换行
 
-#表
+# 表
 
 * 参数过多直接用表格列出，tex格式
 
