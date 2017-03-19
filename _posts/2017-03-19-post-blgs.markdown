@@ -1,0 +1,26 @@
+---
+layout:     post
+title:      "Keep moving"
+subtitle:   " \"for life\""
+date:       2017-03-19 10:00:00
+author:     "cailang.X"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0319/20170319.jpg"
+catalog: true
+music-titles:  
+      - "lifer"  
+music-artists:
+      - "Galen Crew"
+music-links:
+- "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-music/2017-03-19/Galen%20Crew%20-%20lifter.mp3"
+
+
+music-posts:
+- "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0319/20170319-m.jpg"
+
+tags:
+    - Music
+    - 生活
+---
+> "what's the purpose of my life?"
+
+I don't know how to organize my words, but just want to record my feelings in sometimes. Like this moment, as kept moving for a long time without any breaks. Forgive me, inexplicable in a bad mood, do not want to think anything, just one quiet daze. Lost in the music and stairing blankly. Storing energy for tomorrow, hope and dreams. After regulating my emotions, I will set off again at a more sedate pace with my love.
