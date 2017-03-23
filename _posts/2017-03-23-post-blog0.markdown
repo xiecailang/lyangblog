@@ -1,0 +1,152 @@
+---
+layout:     post
+title:      "MVC项目心得"
+subtitle:   " \"第一个项目小结\""
+date:       2017-03-22 10:00:00
+author:     "yang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0323/20170323030213.jpg"
+catalog: true
+tags:
+    - 项目
+---
+
+# 开始
+
+项目伊始，源于领导的一个设想·····想要一个能够各项目组使用的文件共享系统。在进一步调研需求和分析讨论后，我们决定采用MVC模式来实现。期初的设想是我和西哥负责后台，小聂负责页面设计。因为MVC的框架比较成熟，这样做起来应该很轻松。但是，实际情况却有点让人措手不及。除了简单的controller-view跳转，我貌似不会其他的东东了·····
+
+**MVC理解加深--类型传值**
+
+在多次查阅资料后，我对强类型的理解进一步加深。Controller传值给View时，即可在其中添加MODEL【可为List】。而View端，声明同样类型的MODEL【同类型List】就可以获取到后台传来的模型。
+
+
+**MVC理解加深-分部视图**
+
+之前由于页面较简单，没有用过分部视图这个功能。它的功能主要就是部分刷新，可以用于框架中内容的刷新。View中调用方式主要有以下两种。
+
+```html
+1 @{
+2     Layout = null;
+3 }
+4 <h2>Before PartialView</h2>
+5 <hr />
+6 @Html.Partial("PartialPage")
+7 <hr />
+8 @{
+9     Html.RenderPartial("PartialPage");
+10 }
+11 <hr />
+12 <h2>After PartialView</h2>
+
+```
+同时，partial可以带模型
+```Html
+1 @{
+ 2     Layout = null;
+ 3 }
+ 4 <h2>Before PartialView</h2>
+ 5 <hr />
+ 6 @Html.Partial("PartialPage",1)
+ 7 <hr />
+ 8 @{
+ 9     Html.RenderPartial("PartialPage",2);
+10 }
+11 <hr />
+12 <h2>After PartialView</h2>
+```
+
+* 使用ChildAction调用分部视图
+
+前面调用PartialView的方式都是通过一个View来调用PartialView。下面我们来介绍通过View调用ChildAction来返回PartialView。
+
+首先在PartialViewController.cs里面写一个ChildAction代码如下：
+
+```csharp
+ 1 [ChildActionOnly]
+ 2 public PartialViewResult ChildAction(DateTime time)
+ 3 {
+ 4     string greetings = string.Empty;
+ 5     if(time.Hour > 18)
+ 6     {
+ 7         greetings = "Good evening. Now is " + time.ToString("HH:mm:ss");
+ 8     }
+ 9     else if (time.Hour > 12)
+10     {
+11         greetings = "Good afternoon. Now is " + time.ToString("HH:mm:ss");
+12     }
+13     else
+14     {
+15         greetings = "Good morning. Now is " + time.ToString("HH:mm:ss");
+16     }
+17     return PartialView("ChildAction",greetings);
+18 }
+```
+第1行，在ChildAction函数的前面写上[ChildActionOnly]表示这个Action只能作为ChildAction使用。ChildAction返回partialView的好处就是在Action里可以做一些处理和控制。这里第4到16行就是根据获得的时间返回不同的问候语。第17行返回其对应的PartialView并传入greetings作为Model。右键点击ChildAction函数名选择创建视图，取名为ChildAction。写入如下代码：
+
+```html
+@model string
+<h2>@Model</h2>
+```
+这个PartialView很简单，就是把传入的Model显示出来。
+
+修改~\Views\PartialView\Index.cshtml文件，代码如下：
+
+```html
+ 1 @{
+ 2     Layout = null;
+ 3 }
+ 4 <h2>Before PartialView</h2>
+ 5 <hr />
+ 6 @Html.Action("ChildAction", new { time = DateTime.Now })
+ 7 <hr />
+ 8 @{
+ 9     Html.RenderAction("ChildAction", new { time = DateTime.Now.AddHours(12) });
+10 }
+11 <hr />
+12 <h2>After PartialView</h2>
+```
+调用ChildAction同样有两种方法，Html.Action和Html.RenderAction。它们的区别跟Partial和RenderPartial是一样的。这两个函数的第一个参数是要调用的ChildAction的名字，第二个参数是要传递的参数。参数是用匿名对象的方法创建的Object。
+
+
+**SqlServer数据库学习**
+
+* 查询左、右连接；inner join
+
+* 分组查询 groupby
+
+* 自动行
+
+* case when then end 判断
+
+**基础Ajax学习**
+
+由于前端效果有采用JS和AngularJs技术实现(例如：用户名的添加不能与库中已有用户名相重，在输入名称input框失焦时，进行判断，提示重新输入。)
+
+JS中:
+```js
+$("#editRoleName").focusout(function()
+  {
+      $.ajax({
+          type: "get", //传输方式  
+          url: "/api/Role/CompareTheRole",//调用的方法所在的页面和方法名  
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          async: false,
+          data:{name:$(this).val(),id:$("input[name='RoleId']").val()},
+          success: function (result) {
+              if(result==true)
+              {
+                  $("#editRolebtn").attr("disabled", false);
+              }
+              else
+              {
+                  alert("该角色名已存在，请录入其他名称");
+                  $("#editRolebtn").attr("disabled", true);
+              }
+          },
+          error: function (err) {
+              alert("err");
+          }
+      }
+  )
+  })
+```
