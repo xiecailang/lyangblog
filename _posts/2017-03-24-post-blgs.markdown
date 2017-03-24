@@ -1,0 +1,100 @@
+---
+layout:     post
+title:      "MVC项目心得"
+subtitle:   " \"COOKIE&session\""
+date:       2017-03-23 10:00:00
+author:     "yang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0323/20170323030213.jpg"
+catalog: true
+tags:
+    - 项目
+---
+# 诱人的cookie和理智的session
+
+对于一个并非计算机专业的学生来讲，session听都没有听过····cookie这东西之前只知道它是浏览器的一种缓存，便于用户下次登录，并不太了解具体的内容。项目中要实现用户登录的判断与缓存，所以又接触了这么一个新知识。
+
+**USE**
+
+它们的用途是一样的，用来保持访问者与后端服务器的交互状态.
+
+* cookie
+
+cookie是由服务器通过在HTTP响应头中增加特殊指示生成，发送给浏览器。浏览器将cookie的value保存到某目录问佳佳内，下次请求同意网站时就发送Cookie给服务器。服务器可以设置或读取cookies中包含的信息，维护用户跟服务器会话中的状态。
+
+
+* session
+
+当浏览器第一次发送请求时，服务器自动生成了一个Session和Session ID用来唯一标识这个Session,并将其通过响应发送到浏览器[浏览器中使用Cookie保存Session ID，所以一旦客户端禁用cookie，Session也会失效]。当浏览器发送第二次请求，会将前一次服务器响应中的Session ID放在请求中一并发到服务器上，服务器从请求中提取出Session ID，并和保存的所有Session ID进行对比，找到这个用户对应的Session ID。 一般情况下，每个session都有保质期（默认30分钟），超时后服务器就会销毁这个Session。程序员可以将用户的一些数据以[KEY-VALUE]的形式暂时存在这个Session中。
+
+当然，也有使用数据库将这个session序列化后保存起来，这样的好处是没有时间限制，坏处就是随着时间的增加，特别是，当访问量增加时，数据库会急速膨胀。一般不采取这样的方法。
+
+
+* 列表对比
+
+|    不同    |    cookie    |    session   |
+|:----------:|:------------:|:------------:|
+|存储位置|浏览器端|服务器端|
+|安全性|cookie不是很安全，别人可以分析存放在本地的COOKIE并进行cookie欺骗\跨站脚本攻击|较高，可以传用户名、密码之类安全性较高的数据|
+|数量|不能跨域名；单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie|由于存储在服务器内存中，当访问增多时,会大量占用服务器的性能.存储内容要精简（Key+Value）,数目也精简|
+
+
+
+
+**Cookie典型应用**
+
+1. 判断用户是否登陆过网站，以便下次登录时能够直接登录。如果我们删除cookie，则每次登录必须从新填写登录的相关信息。
+
+2. 另一个重要的应用是“购物车”中类的处理和设计。用户可能在一段时间内在同一家网站的不同页面选择不同的商品，可以将这些信息都写入cookie，在最后付款时从cookie中提取这些信息，当然这里面有了安全和性能问题需要我们考虑了。
+
+3. Cookie 生成
+
+```csharp
+//创建一个HttpCookie对象
+Httpcookie cookie=new HttpCookie("Cookie1");
+//设定此cookie值
+cookie.value=valuefiled.text;
+//加入此cookie
+Response.cookies.add(cookie);
+
+//设置cookie生命周期;为一个系哦啊哈斯
+Datetime dtnow=Datetime.now();
+TimeSpan tsminute=new TimeSpan(0,1,0,0);
+cookie.expires=dtnow+tsminute;
+Response.cookies.add(cookie);
+
+//读取指定的cookie
+Httpcookie cookie=request.cookies["cookie名"]；
+Response.write(cookie.value.ToString());
+```
+
+**session的相关应用**
+
+1. 用户登录时 存储token
+下篇再细说token
+
+```csharp
+//cookie
+HttpCookie cookie = new HttpCookie("User");
+string Token = System.Guid.NewGuid().ToString();
+cookie.Values.Add("token", Token);
+//浏览器添加cookie
+Response.Cookies.Add(cookie);
+//服务器端添加Session
+Session[Token] = i;
+
+HttpContext.Cache.Insert(Token, i);
+//session 加入User对象 by xcf
+WebApp.Models.Sys_UserView  tempUser =(WebApp.Models.Sys_UserView)db.GetViewModel(i);
+Session["User"] = tempUser;
+Session["AdminFlag"] = tempUser.AdminFlag;
+HttpContext.Cache.Insert("User", tempUser);
+HttpContext.Cache.Insert("AdminFlag", roleBll.GetAdmin(tempUser.RoleId));
+result.Content = "OK";
+//系统日志
+ProjectAVIC.BLL.Sys_Log.WriteLog("用户登陆，地址：" + System.Web.HttpContext.Current.Request.UserHostAddress, tempUser.Id);
+
+```
+
+**总结**
+
+从历史上说，是第二次接触这些概念。希望，下次项目能够自己写出相应的操作。
