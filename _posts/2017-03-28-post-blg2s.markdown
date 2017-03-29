@@ -1,0 +1,53 @@
+---
+layout:     post
+title:      "Token的思考"
+subtitle:   " \"Token学习心得\""
+date:       2017-03-28 14:00:00
+author:     "yang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2015/move-post-bg.jpg?x-oss-process=image"
+catalog: true
+tags:
+    - Tech
+---
+>参考 [使用json web token](http://www.haomou.net/2014/08/13/2014_web_token/)
+
+# Token 令牌认证
+
+之前我认为用户登录就是认证数据库中的用户名、密码是否配对正确，正确即代表用户存在，可以登录。但是，没那么简单······除了登录，还要考虑到网页中之后操作对象的鉴权，是否是之前的用户呢?怎样能够简化认证呢？Token的出现让人心旷神怡。
+
+**传统身份认证方法**
+
+*session*
+当用户请求登陆时，服务端会产生一条记录，记录当前登录用户，然后把这条记录的ID号发给客户端。客户端收到后把ID存在cookie中，下次再向服务端发送请求时，就带着cookie。服务端就直接验证cookie的信息，查找对应记录，如果有对应记录的话，就说明该用户已经通过了身份验证，就把用户请求的数据返回给客户端。session可能会存储在内存、磁盘、数据库中，需要定期清理。
+
+
+**基于Token验证**
+
+Token验证的最大特点就是随机性，不可预测。使用基于Token的身份验证方法，服务端不需要存储用户的 *登陆记录*。
+
+1. Client 使用用户名+密码 请求登陆
+2. Server 收到请求 验证用户名与密码
+3. Server 验证成功后签发Token 把这个Token发送给客户端
+4. Client 收到Token后存储 存放在cookie或local storage里
+5. Client 每次向Server请求资源时都要携带Token
+6. Server 收到请求，验证Token 若验证成功，返回请求的数据
+
+实施Token验证的标准方法是：JWT（JSON Web Tokens）,标准的Token由三部分组成：
+1. header：Token类型+使用算法
+2. payload：Token具体内容，标准字段
+3. signature：Base64编码的header.payload+加密算法
+它们都采用Base64编码，组合起来，中间用点分隔。
+
+
+token一般用在两个地方：
+1. 防止表单重复提交
+2. anti csrf攻击（跨站点请求伪造）
+
+代码中主要实现的有：
+* token的生成
+* 处理 加密
+* 获取 post or get方法
+* 验证 中间件
+
+
+当浏览器关闭时，token会失效······

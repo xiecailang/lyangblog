@@ -1,13 +1,13 @@
 ---
 layout:     post
 title:      "MVC项目心得"
-subtitle:   "\"cookie和session\""
-date:       2017-03-23 10:00:00
+subtitle:   " \"COOKIE&session\""
+date:       2017-03-28 13:00:00
 author:     "yang"
 header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0323/20170323030213.jpg"
 catalog: true
 tags:
-    - 项目
+    - Tech
 ---
 # 诱人的cookie和理智的session
 
@@ -98,3 +98,12 @@ ProjectAVIC.BLL.Sys_Log.WriteLog("用户登陆，地址：" + System.Web.HttpCon
 **总结**
 
 从历史上说，是第二次接触这些概念。希望，下次项目能够自己写出相应的操作。
+
+
+**后记**
+
+又发现了一篇非常优秀的博客,有关http协议的状态性解释和session的hijack
+
+[关于SESSION的理解](http://www.haomou.net/2014/08/07/2014_session/)
+
+[APP接口安全token设计](http://blog.csdn.net/b452608/article/details/50967849)
