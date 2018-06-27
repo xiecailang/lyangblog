@@ -43,3 +43,4 @@ conda install -c menpo dlib
 # 文档
 
 1. [dlib及face_recognition安装指南](https://blog.csdn.net/wyc12306/article/details/79286361)
+2. [windows7下安装python库face_recognition](https://blog.csdn.net/Cabchinoe/article/details/78392502)
