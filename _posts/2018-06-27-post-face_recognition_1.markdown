@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "带遮挡的开集人脸识别"
-subtitle:   " \"环境搭建\""
-date:       2018-06-27 10:00:00
+title:      "2019秋招准备"
+subtitle:   " \"找工作\""
+date:       2018-07-02 10:00:00
 author:     "yang"
 header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
 
@@ -11,36 +11,29 @@ tags:
     - Tech
 ---
 
-# 赛题介绍
+# 目标
 
-* 赛事名称： 第五届中国研究生智慧城市技术与创意设计大赛
-* 赛题名称： 智能技术挑战赛-智能图片技术-带遮挡的开集人脸识别
-* 赛题内容： 在人脸部分被遮挡的情况下，识别出给定的目标人脸图像对应的人物身份。
-带遮挡的人脸识别任务可以描述为：给定特定人脸图片集作为probe，并给出指定的gallery图片库，由参评系统自动地在probe中进行人脸识别，并返回该图片识别出为gallery图片库的人脸的ID信息（注意，probe集中的人脸未必包含在gallery集中）。
+* 整理要应聘的企业、岗位，以及他们招聘流程，网申截止时间等等
+* 熟悉岗位所需技能，做相应的准备
+* 想好预期薪资
 
+# 简历准备
 
-# 环境搭建
-
-## 安装
-
-anaconda 和 pycharm
-
-## 部署
-
-1. 使用conda新建python环境
-
-```
-conda create --name python_3_5 python=3.5 numpy scipy
-```
-
-2. 安装dlib
-
-```
-conda install -c menpo dlib
-```
+* 一页简历
+* 不断完善简历，尤其是项目信息一栏
+* 根据简历总结每个项目用到的关键技术、关键难题、算法、如何解决等问题
 
 
-# 文档
+# 笔试准备
 
-1. [dlib及face_recognition安装指南](https://blog.csdn.net/wyc12306/article/details/79286361)
-2. [windows7下安装python库face_recognition](https://blog.csdn.net/Cabchinoe/article/details/78392502)
+* 复习《剑指offer》《编程之美》《算法图解》《算法导论》等辅导书，实现里面所有的算法题
+* 刷LeetCode，100题
+* 看Udacity的《机器学习入门》课程
+
+# 面试准备
+
+* 准备自我介绍
+* 看牛客派送的面试经验和面试题
+* 熟悉简历所写项目相关问题，列出面试官可能会提到的问题
+* 参考机器学习相关的面试题，列出面试官可能会提到的问题
+* 想好对面试官提出的问题，根据企业和岗位的不同列出若干题
