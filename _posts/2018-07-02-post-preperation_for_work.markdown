@@ -3,7 +3,7 @@ layout:     post
 title:      "带遮挡的开集人脸识别"
 subtitle:   " \"环境搭建\""
 date:       2018-06-27 10:00:00
-author:     "yang"
+author:     "lang"
 header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
 
 catalog: true

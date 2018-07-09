@@ -3,7 +3,7 @@ layout:     post
 title:      "2019秋招准备"
 subtitle:   " \"找工作\""
 date:       2018-07-02 10:00:00
-author:     "yang"
+author:     "lang"
 header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
 
 catalog: true
