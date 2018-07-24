@@ -29,11 +29,16 @@ tags:
 * 打开c:/local，双击 **boostrap.bat**
 * 生成了b2.exe
 * 打开命令行，定位到c:/local，输入 
+
     b2 install
+
 * 等待时间有点久
 * 编译库文件，命令行输入
+
     b2 -a --with-python address-model=64 toolset=msvc runtime-link=static
+
 * 设置环境变量
+
     set BOOST_ROOT=C:\local\boost_X_XX_0
     set BOOST_LIBRARYDIR=C:\local\boost_X_XX_X\stage\lib
 
@@ -41,11 +46,13 @@ tags:
 
 * 直接在github上同步[dlib源代码](https://github.com/davisking/dlib.git),前提是安装了github客户端
 * 定位到dlib根目录，找到setup.py，打开conda prompt （安装了anaconda），输入
+
     python setup.py install
 
 # face_recognition
 
 dlib安装成功后,在conda prompt直接输入
+
     pip install face_recognition
 
 ----------------------------分割线----------------------------------
