@@ -24,10 +24,10 @@ tags:
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/${fileBasenameNoExtension}.exe",
+            "program": "${workspaceRoot}/${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceRoot}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
@@ -50,10 +50,10 @@ tags:
 ```json
 {
     "command": "g++",
-    "args": ["-g","-std=c++11","${file}","-o","${workspaceFolder}\\${fileBasenameNoExtension}.exe"],
+    "args": ["-g","-std=c++11","${file}","-o","${workspaceRoot}\\${fileBasenameNoExtension}.exe"],
     "problemMatcher": {
         "owner": "cpp",
-        "fileLocation": ["relative", "${workspaceFolder}"],
+        "fileLocation": ["relative", "${workspaceRoot}"],
         "pattern": {
             "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
             "file": 1,
@@ -63,5 +63,35 @@ tags:
             "message": 5
         }
     }
+}
+```
+
+# c_cpp_properties.json
+
+```json
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:/MinGW/include/**",
+                "C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/mingw32/bits/**",
+                "C:/MinGW/lib/gcc/mingw32/6.3.0/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__GNUC__=7",
+                "__cdecl=__attribute__((__cdecl__))"
+            ],
+            "windowsSdkVersion": "10.0.17134.0",
+            "compilerPath": "C:/MinGW/bin/g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
 }
 ```
