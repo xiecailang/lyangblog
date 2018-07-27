@@ -62,3 +62,11 @@ dlib安装成功后,在conda prompt直接输入
 换成一下命令可以安装
 
     conda install -c menpo dlib
+
+----------------------------再割-------------------------------------
+
+使用whl一秒装dlib，最新的whl文件是[dlib-19.7.0-cp36-cp36m-win_amd64.whl](https://pypi.org/project/dlib/19.7.0/#files)
+
+    pip install dlib-19.7.0-cp36-cp36m-win_amd64.whl
+
+
