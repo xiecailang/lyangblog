@@ -70,3 +70,12 @@ print(clf.predict([[-0.8, -1]]))
 SVM的任务就是最大化 **Margin** 
 
 SVM总是优先考虑数据是否被正确分类（实际中会忽略某些异常数据），再考虑是否最大化 **Margin**
+
+对于线性不可分的两类数据，通常通过添加新特征来进一步区分，例如，数据A集中在坐标轴原点附近，数据B距离原点较远，则可以添加新特征$$z=x^2+y^2$$, 建立新的坐标轴x-z，发现数据集A、B线性可分了
+
+```python
+from sklearn import svm
+clf = svm.SVC()
+clf.fit(x, y)
+clf.predict(z)
+```
