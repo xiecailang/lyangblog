@@ -37,4 +37,19 @@ tags:
   优点：模型简单，训练速度快
   缺点：Naive bayes对词序不敏感，交换词序通常不会对预测结果有影响
 
+  using sklearn
+  Code:
   
+```python
+X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+Y = np.array([1, 1, 1, 2, 2, 2])
+from sklearn.naive_bayes import GaussianNB
+clf = GaussianNB()
+clf.fit(x, y)
+print(clf.predict([[-0.8, -1]])) 
+```
+
+# SVM
+  寻找两类数据的分割线，或者超平面
+  关键词： **Margin**，与分割线最近的点与分割线的距离
+  SVM的任务就是最大化 **Margin** 
