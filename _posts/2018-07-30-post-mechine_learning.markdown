@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "string 转 int"
+title:      "机器学习复习"
 subtitle:   " \"Machine Learning\""
 date:       2018-07-30 10:00:00
 author:     "lang"
@@ -39,7 +39,7 @@ tags:
 
   using sklearn
   Code:
-  
+
 ```python
 X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
 Y = np.array([1, 1, 1, 2, 2, 2])
@@ -53,3 +53,4 @@ print(clf.predict([[-0.8, -1]]))
   寻找两类数据的分割线，或者超平面
   关键词： **Margin**，与分割线最近的点与分割线的距离
   SVM的任务就是最大化 **Margin** 
+  SVM总是优先考虑数据是否被正确分类（实际中会忽略某些异常数据），再考虑是否最大化 **Margin**
