@@ -10,8 +10,18 @@ catalog: true
 tags:
     - Tech
 ---
+监督式学习：y=f(x),可分为回归问题和分类问题  
+分类和回归问题比较:  
+|属性|分类|回归|
+|-|:-:|:-:|
+|输出类型|离散|连续|
+|目标|找出决策边界|找出最好的fit line|
+|评估|查准率accuracy|误差|
 
-# 朴素贝叶斯 Naive bayes
+非监督式学习：只拥有x没有相关的输出变量，可分为聚类问题和关联问题  
+半监督式学习：拥有大部分x，只有少部分数据拥有y，现实中如照片分类、数据打标签等等  
+
+# 朴素贝叶斯 Naive bayes - 监督性 - 分类
 
 * Example
 患癌症的概率为P(C) = 0.01  
@@ -43,17 +53,68 @@ clf.fit(x, y)
 print(clf.predict([[-0.8, -1]])) 
 ```
 
-# SVM
+# SVM - 监督性 - 分类
 
 寻找两类数据的分割线，或者超平面  
 关键词： **Margin**，与分割线最近的点与分割线的距离  
 SVM的任务就是最大化 **Margin**  
 SVM总是优先考虑数据是否被正确分类（实际中会忽略某些异常数据），再考虑是否最大化 **Margin**  
-对于线性不可分的两类数据，通常通过添加新特征来进一步区分，例如，数据A集中在坐标轴原点附近，数据B距离原点较远，则可以添加新特征$$z=x^2+y^2$$, 建立新的坐标轴x-z，发现数据集A、B线性可分了  
+对于线性不可分的两类数据，通常通过添加新特征来进一步区分，例如，数据A集中在坐标轴原点附近，数据B距离原点较远，则可以添加新特征$$z=x^2+y^2$$, 建立新的坐标轴x-z，发现数据集A、B线性可分了 
+**核函数**用于将特征从低维空间映射到高维空间，使得线性不可分的数据变得线性可分，常用的有线性linear、多项式poly，径向基函数rbf，s函数sigmoid等等
+
+**SVM优缺点**
+对于明显边界的数据可以有很好的效果，但是对于海量的复杂数据，他们表现不够好，**训练时间与数据量的三次方成正比**。对于噪声过大的数据同样表现不佳，噪声有可能会导致算法太慢和过拟合
 
 ```python
 from sklearn import svm
 clf = svm.SVC()
 clf.fit(x, y)
 clf.predict(z)
+```
+
+# 决策树 Decision trees - 监督性 - 分类
+
+DT也可以使用核函数技巧将数据进行线性和非线性之间的转换  
+DT参数：min_samples_split，可分割的样本数下限，决定了样本数减小到某一个值后是否还需要继续进行分割  
+min_samples_leaf, 叶节点最小样本数  
+max_depth，最大深度
+调节这些参数可以缓和过拟合现象
+
+**熵 Entropy**：一系列样本中纯度（单一性）的度量，所有样本都在一个分类，则Entropy=0，所有样本都不在对应的分类，则Entropy=1    
+DT的目的就是递归重复，找到能使Entropy尽量小（纯度高）的分割点  
+$$\mathbf{E}=\sum_{i}-p_i\mathrm(log)_2(p_i)$$  
+
+**信息增益**=Entropy(parent) - [加权平均]Entropy(children)  
+DT算法最大化信息增益
+
+code  
+```python
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(x, y)
+```
+
+# 回归
+
+线性回归方程 y=kx+b  
+k: 斜率（slope），b：截距 （intercept）  
+更一般性方程：  
+$$\hat{y}(w, x) = w_0 + w_1x_1+...+w_px_p$$  
+$$w = (w_1, ..., w_p)$$是系数coef_  
+$$w_0$$为截距intercept_  
+
+线性回归误差error = 实际 - 预测  
+回归中需要平衡*误差*和*过拟合*  
+回归中要尽量最小化误差平方和(SSE)：$$min(\sum_{all samples}(actual - predicted)^2)$$  
+回归训练评估指标：$$0<R^2<1$$ 和 均方误差根(RMSE)
+
+
+
+
+
+code  
+```python
+from sklearn import linear_model
+clf = linear_model.LinearRegression()
+clf.fit(x, y)
 ```
