@@ -12,11 +12,11 @@ tags:
 ---
 监督式学习：y=f(x),可分为回归问题和分类问题  
 分类和回归问题比较:  
-|属性|分类|回归|
-|-|:-:|:-:|
-|输出类型|离散|连续|
-|目标|找出决策边界|找出最好的fit line|
-|评估|查准率accuracy|误差|
+| 属性 | 分类 | 回归 |
+| - | :-: | :-: |
+| 输出类型 | 离散 | 连续 |
+| 目标 | 找出决策边界 | 找出最好的fit line |
+| 评估 | 查准率accuracy | 误差 |
 
 非监督式学习：只拥有x没有相关的输出变量，可分为聚类问题和关联问题  
 半监督式学习：拥有大部分x，只有少部分数据拥有y，现实中如照片分类、数据打标签等等  
@@ -98,7 +98,7 @@ clf = clf.fit(x, y)
 
 线性回归方程 y=kx+b  
 k: 斜率（slope），b：截距 （intercept）  
-更一般性方程：  
+更一般性方程（多元回归）：  
 $$\hat{y}(w, x) = w_0 + w_1x_1+...+w_px_p$$  
 $$w = (w_1, ..., w_p)$$是系数coef_  
 $$w_0$$为截距intercept_  
@@ -108,13 +108,32 @@ $$w_0$$为截距intercept_
 回归中要尽量最小化误差平方和(SSE)：$$min(\sum_{all samples}(actual - predicted)^2)$$  
 回归训练评估指标：$$0<R^2<1$$ 和 均方误差根(RMSE)
 
-
-
-
-
 code  
 ```python
 from sklearn import linear_model
 clf = linear_model.LinearRegression()
 clf.fit(x, y)
 ```
+
+# K-均值 k-means - 非监督式 - 聚类
+
+最基本的聚类算法  
+k-means算法（橡皮筋），给出初始的聚类中心，迭代改变聚类中心位置使得points到聚类中心的二次距离最小，可以把point和中心点之间的连接线看成橡皮筋，我们要找出使得橡皮筋能量最小的状态  
+当迭代完成后，中心点之间连接线的垂直平分线将数据分为不同的两类  
+可以在[k-means在线尝试](http://www.naftaliharris.com/blog/visualizing-k-means-clustering/)进行模拟尝试
+
+# 特征缩放
+
+假如，已知chris的身高体重，给他选择合适尺码的T恤，给出cameron和sarah身高体重，他们分别穿L和S码： 
+
+|names|weight(lbs)|height(ft)|
+|-|:-:|:-:|
+|chris|140|6.1|
+|cameron|175|5.9|
+|sarah|115|5.2|
+
+如果没有对特征进行缩放，直接用weight+height公式比较三个人，会发现sarah的数据更接近chris，然而实际上应该是cameron穿的T恤更适合chris。  
+特征缩放公式：  
+$$x' = \frac{x - x_{min}}{x_{max} - x_{min}}$$  
+因此，对于体重[115, 140, 175]都要通过上面的公式缩放到相应的大小，身高也是如此。  
+
