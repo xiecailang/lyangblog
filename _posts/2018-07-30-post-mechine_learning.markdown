@@ -12,6 +12,7 @@ tags:
 ---
 监督式学习：y=f(x),可分为回归问题和分类问题  
 分类和回归问题比较:  
+
 | 属性 | 分类 | 回归 |
 | - | :-: | :-: |
 | 输出类型 | 离散 | 连续 |
@@ -126,7 +127,7 @@ k-means算法（橡皮筋），给出初始的聚类中心，迭代改变聚类�
 
 假如，已知chris的身高体重，给他选择合适尺码的T恤，给出cameron和sarah身高体重，他们分别穿L和S码： 
 
-|names|weight(lbs)|height(ft)|
+names|weight(lbs)|height(ft)|
 |-|:-:|:-:|
 |chris|140|6.1|
 |cameron|175|5.9|
@@ -137,3 +138,26 @@ k-means算法（橡皮筋），给出初始的聚类中心，迭代改变聚类�
 $$x' = \frac{x - x_{min}}{x_{max} - x_{min}}$$  
 因此，对于体重[115, 140, 175]都要通过上面的公式缩放到相应的大小，身高也是如此。  
 
+# 文本学习
+
+文本学习中的一个基本问题，就是文本数据的长度不一致，在机器学习中，通常有一个功能：bag of words，即词袋。通过比较词袋和输入的文本，计算出词袋中包含的单词出现的次数，这样就可以得到一个向量  
+比如  
+输入： nice day  
+词袋：nice very day he she love  
+向量: 1  0  1  0  0  0  
+在进行文本分析前有两个步骤需要做：**去除低信息单词（stopword），比如the, in, for...** 和 **词干化,同一个意思不同词性的单词，比如unresponsive, response, responsivity...它们的词干是respon**  
+
+自然语言工具 **NLTK** [下载](http://stackoverflow.com/questions/5843817/programmatically-install-nltk-corpora-models-i-e-without-the-gui-downloader)  
+下载步骤
+    import nltk
+    nltk.download()
+
+# 主成分分析 PCA
+
+**数据维度** 坐标位移和旋转来确定数据维度  
+PCA第一主成分，新坐标中心  
+PCA第二主成分，新坐标x向量，它在旧坐标轴上的分量为$$\Delta{}x, \Delta{}y$$，同样y向量也有这两个分量，将新的x，y向量归一化后他们分量也会发生变化  
+不管对于什么数据，PCA总是会给出一个确定的主轴  
+对于呈直线分布的数据，长轴占主导地位，沿着长轴可以捕获大部分的数据  
+
+PCA也可用于给数据降维，将大量的特征进行压缩，提取出主要成分，方法是找出高维数据的主轴，将数据投影到主轴上形成一维数据
