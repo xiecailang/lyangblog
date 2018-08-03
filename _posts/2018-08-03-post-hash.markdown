@@ -1,0 +1,70 @@
+---
+layout:     post
+title:      "HashMap和HashTable的区别"
+subtitle:   " \"知识点\""
+date:       2018-08-03 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+> HashTable产生于JDK 1.1， 而HashMap产生于JDK1.2
+
+# 继承体系
+
+HashMap和HashTable都继承了Map、Cloneable、Serializable三个接口，但是HashMap继承自抽象类AbstractMap，而HashTable继承自抽象类Dictionary，其中Dictionary是已经被废弃的类。从公开的方法上看，这两个类提供的是一样的功能，**都提供键值映射的服务，可以增、删、查、改键值对，可以对建、值、键值对提供遍历视图。支持浅拷贝，支持序列化。**
+
+# null key 和 null value
+
+HashMap支持null key和null value，而当HashTable遇到null时，会throws NullPointerException异常，并不是HashTable内部原因导致不支持null，而是HashMap内部对null做了特殊处理，将null的hashCode设定为0，从而将其存放在哈希表中第0个bucket中
+
+# 数据结构
+
+两者都用哈希表来存储键值对，在数据结构上进本相同，都船舰了一个继承自Map.Entry的私有内部类，每个Entry对象表示存储在哈希表中的一个键值对。  
+Entry有下面4个属性：  
+
+* K key 键对象
+* V value 值对象
+* int hash 键对象的hash code
+* Entry entry 指向链表中下一个Entry对象，为null表示到达链表尾部
+
+# 算法
+
+1. 初始容量大小和每次扩充容量大小不同
+    * HashTable默认初始大小11，每次扩充为原来的2n+1
+    * HashMap默认16，每次扩充为原来的2倍，即2n
+    * 另外，创建时指定了大小，HashTable会直接使用给定的大小，HashMap会将其扩充为2的幂次方大小
+    * 可以看出，HashTable尽量使用素数、奇数，HashMap总是使用2的幂次作为哈希表大小。当哈希表大小为素数时，简单的取模哈希的结果更加均匀，这点上看HashTable似乎更加高明，但是另一方面，在取模运算时，如果模数时2的幂，那么可以直接用位运算得到结果，效率要大大高于除法，因此HashMap在hash计算效率上更胜一筹
+    * HashMap选用了2的幂次方作为hash表大小，这种取模运算会导致大量键值冲突，为了缓解这个问题，HashMap在调用对方的hashCode之后 ，又做了一些位运算打散数据
+2. 线程安全
+   * HashTable时同步的，HashMap不是，HashMap在多线程使用时需要做额外的同步，HashTable实现同步的方法,在公开方法中都使用了 **synchronized** 描述符，而遍历方法如keySet都用了 **Collections.synchronizedXXX** 进行封装
+  
+    ```java
+    public synchronized V get(Object key) {
+    Entry tab[] = table;
+    int hash = hash(key);
+    int index = (hash & 0x7FFFFFFF) % tab.length;
+    for (Entry<K,V> e = tab[index] ; e != null ; e = e.next) {
+        if ((e.hash == hash) && e.key.equals(key)) {
+            return e.value;
+        }
+    }
+    return null;
+    }
+        public Set<K> keySet() {
+        if (keySet == null)
+            keySet = Collections.synchronizedSet(new KeySet(), this);
+        return keySet;
+    }
+    ```
+
+# HashTable已经被淘汰，不要在代码中使用它
+
+如果不需要线程安全，那么使用HashMap，如果需要线程安全，那么使用ConcurrentHashMap
+
+# 引用
+
+[HashMap 和 HashTable 到底哪不同 ？](http://www.importnew.com/24822.html)
