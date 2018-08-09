@@ -1,0 +1,129 @@
+---
+layout:     post
+title:      "3sum"
+subtitle:   " \"Leetcode\""
+date:       2018-08-09 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+# Problem
+
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.  
+**Note**:  
+The solution set must not contain duplicate triplets.  
+**Example**  
+
+    Given array nums = [-1, 0, 1, 2, -1, -4],
+    A solution set is:
+    [
+        [-1, 0, 1],
+        [-1, -1, 2]
+    ]
+
+# 思路
+
+利用两个数求和的思路，先将数组进行排序，从小到大，如果3个数相加等于0，则只有两种情况：  
+
+1. 两个数<=0 and 一个数>0
+2. 一个数<=0> and 两个数>0
+
+因此，三个指针i,j,k分别表示三个数，i从排序后的数组起始位置开始一直遍历到0位置，j从i后一个元素开始，k从最后一个数开始，比较 nums[j] + nums[k] 和 -nums[i]的大小，如果前者小，则j往后移，如果前者较大则k往前移动，相等则说明三个数相加等于0，加入结果列表并继续往中间移动，一直到 j >= k。需要注意的是，题目要求不能重复，则只要保证3个数中的两个数不同，在i和j移动时，跳过相等的值即可
+
+下面的代码本地测试可以通过，但是线上提交提示时间超限，排序耗时较大，使用python的list排序方法，nums.sort()即可
+
+# 代码
+
+```python
+class Solution:
+    def sort(self, nums):
+        for i in range(len(nums) - 1):
+            for j in range(len(nums) - i - 1):
+                if nums[j] > nums[j+1]:
+                    nums[j], nums[j+1] = nums[j+1], nums[j]
+        return nums
+
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        #nums = self.sort(nums)
+        nums.sort()
+        i, j, k = 0, 0, 0
+        zero_index = 0
+        while zero_index < len(nums):
+            if nums[zero_index] >= 0:
+                break
+            zero_index += 1
+        res = []
+        pre = None
+        while i <= zero_index and i + 1 < len(nums):  
+            if pre != None and nums[pre] == nums[i]:
+                pre = i
+                i += 1
+                continue
+            j = i + 1
+            k = len(nums) - 1
+            pre_j = None
+            while j < k:
+                if pre_j != None and nums[j] == nums[pre_j]:
+                    pre_j = j
+                    j+=1
+                    continue
+                if nums[j] + nums[k] < -1 * nums[i]:
+                    pre_j = j
+                    j += 1
+                elif nums[j] + nums[k] > -1 * nums[i]:
+                    k -= 1
+                else:
+                    res.append([nums[i], nums[j], nums[k]])
+                    print([nums[i], nums[j], nums[k]])
+                    pre_j = j
+                    j += 1
+                    k -= 1
+            pre = i
+            i += 1
+        return res
+solution = Solution()
+print(solution.threeSum([-2, 0, 0, 2, 2]))
+```
+
+# 另外一种解法
+
+来自Leetcode，有几个要点：
+
+1. 用hash（字典）的方式来重构数组列表，这样就不会有重复项出现
+2. 将数组存成负数和非负数两组列表，3个数相加之和肯定有两个数来自这两个数组，另外一个来自这两个数组的任意一个
+
+```python
+class Solution:
+    def threeSum(self, nums):
+        keys = {}
+        for elem in nums:
+            keys[elem] = keys.get(elem, 0) + 1
+
+        neg_nums = sorted(filter(lambda x: x < 0, keys))
+        pos_nums = sorted(filter(lambda x: x >= 0, keys))
+
+        if 0 in keys and keys[0] > 2:
+            res = [[0,0,0]]
+        else:
+            res = []
+
+        for neg in neg_nums:
+            for pos in pos_nums:
+                num = -(neg + pos)
+                if num in keys:
+                    if num in (neg, pos) and keys[num] > 1:
+                        res.append([neg, num, pos])
+                    elif num < neg:
+                        res.append([neg, num, pos])
+                    elif num > pos:
+                        res.append([neg, num, pos])
+        return res
+```
