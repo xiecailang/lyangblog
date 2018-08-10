@@ -1,0 +1,143 @@
+---
+layout:     post
+title:      "画家小Q"
+subtitle:   " \"笔试真题\""
+date:       2018-08-10 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+# 题目
+
+[链接](https://www.nowcoder.com/questionTerminal/6acc6504df67406c98a75f5575e4b94a?orderByHotValue=1&page=1&onlyReference=false)
+
+画家小Q又开始他的艺术创作。小Q拿出了一块有NxM像素格的画板, 画板初始状态是空白的,用'X'表示。 小Q有他独特的绘画技巧,每次小Q会选择一条斜线, 如果斜线的方向形如'/',即斜率为1,小Q会选择这条斜线中的一段格子,都涂画为蓝色,用'B'表示;如果对角线的方向形如'\',即斜率为-1,小Q会选择这条斜线中的一段格子,都涂画为黄色,用'Y'表示。 如果一个格子既被蓝色涂画过又被黄色涂画过,那么这个格子就会变成绿色,用'G'表示。 小Q已经有想画出的作品的样子, 请你帮他计算一下他最少需要多少次操作完成这幅画。
+
+输入描述:  
+每个输入包含一个测试用例。每个测试用例的第一行包含两个正整数N和M(1 <= N, M <= 50), 表示画板的长宽。接下来的N行包含N个长度为M的字符串, 其中包含字符'B','Y','G','X',分别表示蓝色,黄色,绿色,空白。整个表示小Q要完成的作品。
+
+输出描述:  
+输出一个正整数, 表示小Q最少需要多少次操作完成绘画。
+
+# 思路
+
+遍历画板，分4中情况：
+
+1. 当遇到Y时，往右下角走
+2. 当遇到B时，往左下角走
+3. 当遇到G时，往两个方向走（右下角、左下角）
+4. 当遇到X时，直接跳过
+
+用mark记录每次走过的格子，避免重复判断
+
+# 代码
+
+```python
+#画家小Q
+n, m = 4, 4
+str_  = []
+str_.append('YXXB')
+str_.append('XYGX')
+str_.append('XBYY')
+str_.append('BXXY')
+cnt = 0
+mark = [([0] * n) for i in range(m)]
+for i in range(n):
+    for j in range(m):
+        if mark[i][j] == 2 or (mark[i][j] == 1 and str_[i][j] != 'G'):
+            continue
+        if str_[i][j] == 'Y':
+            p, q = i+1, j+1
+            mark[i][j] += 1
+            cnt += 1
+            while p < n and q < m:
+                if not mark[p][q]:
+                    if str_[p][q] == 'Y' or 'G':
+                        mark[p][q] += 1
+                    else:
+                        break
+                p += 1
+                q += 1
+        elif str_[i][j] == 'B':
+            p, q = i + 1, j - 1
+            mark[i][j] += 1
+            cnt += 1
+            while p >= 0 and q >= 0:
+                if not mark[p][q]:
+                    if str_[p][q] == 'B' or 'G':
+                        mark[p][q] += 1
+                    else:
+                        break
+                p += 1
+                q -= 1
+        elif str_[i][j] == 'G':
+            p, q = i+1, j+1
+            if not mark[i][j]:
+                cnt += 2
+            elif mark[i][j] == 1:
+                cnt += 1
+            else:
+                continue
+
+            mark[i][j] += 1
+            while p < n and q < m:
+                if not mark[p][q]:
+                    if str_[p][q] == 'Y' or 'G':
+                        mark[p][q] += 1
+                    else:
+                        break
+                p += 1
+                q += 1
+            p, q = i + 1, j-1
+            while p >= 0 and q >= 0:
+                if not mark[p][q]:
+                    if str_[p][q] == 'B' or 'G':
+                        mark[p][q] += 1
+                    else:
+                        break
+                p += 1
+                q -= 1
+        else:
+            mark[i][j] = 1
+
+print(cnt)
+```
+
+# 递归代码
+
+```python
+def findY(i, j):
+    if i >=0 and i < n and j >=0 and j < m and (str_[i][j] == 'Y' or str_[i][j] == 'G'):
+        if str_[i][j] == 'G':
+            str_[i][j] = 'B'
+        else:
+            str_[i][j] = 'X'
+        findY(i+1, j+1)
+    return
+def findB(i, j):
+    if i >=0 and i < n and j >=0 and j < m and (str_[i][j] == 'B' or str_[i][j] == 'G'):
+        if str_[i][j] == 'G':
+            str_[i][j] = 'Y'
+        else:
+            str_[i][j] = 'X'
+        findB(i+1, j-1)
+    return
+for i in range(n):
+    for j in range(m):
+        if str_[i][j] == 'Y':
+            findY(i, j)
+            cnt += 1
+        elif str_[i][j] == 'B':
+            findB(i, j)
+            cnt += 1
+        elif str_[i][j] == 'G':
+            findY(i, j)
+            cnt += 1
+            str_[i][j] = 'B'
+            findB(i, j)
+            cnt += 1
+```
