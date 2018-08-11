@@ -1,0 +1,42 @@
+---
+layout:     post
+title:      "整除"
+subtitle:   " \"笔试真题\""
+date:       2018-08-11 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+# 问题
+
+题意：输入一个n(1<=n<=100000)，输出满足能被1到n之间（包括1和n）的所有整数整除的最小数，比如输入3，输出6。
+
+# 思路
+
+即求1到n这n个数的最小公倍数
+
+# 代码
+
+[参考求两个或N个数的最大公约数(gcd)和最小公倍数(lcm)的较优算法](https://blog.csdn.net/sunmenggmail/article/details/8197167)  
+
+```python
+#整除
+def gcd(a, b):
+    return a if b==0 else gcd(b, a%b)
+
+def lcm(a, b):
+    return a * b/gcd(a,b)
+def nlcm(nums, n):
+    if n == 1:
+        return nums[0]
+    else:
+        return lcm(nums[n - 1], nlcm(nums, n - 1))
+
+n = int(input())
+nums = [i for i in range(1, n+1, 1)]
+print(nlcm(nums, n))
+```
