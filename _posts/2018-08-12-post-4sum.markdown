@@ -1,0 +1,83 @@
+---
+layout:     post
+title:      "4sum "
+subtitle:   " \"Leetcode\""
+date:       2018-08-13 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+# problem
+
+Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.  
+**Note**:  
+The solution set must not contain duplicate quadruplets.
+
+    Example:
+    Given array nums = [1, 0, -1, 0, -2, 2], and target = 0.
+
+    A solution set is:
+    [
+    [-1,  0, 0, 1],
+    [-2, -1, 1, 2],
+    [-2,  0, 0, 2]
+    ]
+
+# 思路
+
+可以在3sum基础上加一层循环，时间复杂度$$O(n^3)$$，另外一种方法时间复杂度$$O(n^2)$$：  
+
+1. 排序
+2. 两两相加放到dict（hash）里面，key=相加之和，value=下标列表
+3. 循环hash，寻找key2 = target - key1
+4. 跳过重复项，加入结果之前判断是否出现相同的下标
+
+# 代码
+
+```python
+class Solution:
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        if len(nums) == 4 and sum(nums) == target:
+            return [nums]
+        nums.sort()
+        two_sum = {}
+        for i in range(len(nums) - 1):
+            for j in range(i+1, len(nums)):
+                temp = nums[i] + nums[j]
+                if temp not in two_sum:
+                    two_sum[temp] = [[i, j]]
+                else:  
+                    two_sum[temp].append([i, j])
+
+        ans = []
+        #pre_ans = []
+        for key in two_sum.keys():
+            s_target = target - key
+            #if s_target == key:
+                #continue
+            if s_target in two_sum:
+                for i in two_sum[key]:
+                    for j in two_sum[s_target]: 
+                        #有相同元素
+                        if i[0] == j[0] or i[1] == j[0] or i[0] == j[1] or i[1] == j[1]:
+                           continue
+                        sub_ans = [nums[i[0]], nums[i[1]], nums[j[0]], nums[j[1]]]
+                        sub_ans.sort()
+                        if sub_ans not in ans:
+                            ans.append(sub_ans)
+        return ans
+
+nums = [int(i) for i in input().split()]
+target = int(input())
+solution = Solution()
+print(solution.fourSum(nums, target))
+```
