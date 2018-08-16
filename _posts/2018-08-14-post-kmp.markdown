@@ -1,0 +1,95 @@
+---
+layout:     post
+title:      "字符串匹配"
+subtitle:   " \"笔试真题\""
+date:       2018-08-16 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+# Problem
+
+有两个字符串 str1 和 str2， 其中str1是任意[a-z]字符串,str2为模型串，包含‘?’可以替换成任意字符，计算str1中可以匹配的str2的数量  
+例如，str1 = abcabd， str2 = ‘ab?’，那么可匹配数两为二，分别是abc，abd
+
+# 思路
+
+[参考文章](https://segmentfault.com/a/1190000008575379)  
+**KMP** 算法求解字符串匹配问题，关键问题求 **next**数组，next保存匹配失败后下一个需要匹配字符在模式串中的下标，同时也表示当前字符前面的子串最大的相同前缀和后缀  
+China  
+前缀：C, Ch, Chi, Chin（去除最后一个字符的子串组合）  
+后缀：a, na, ina, hina（去除首字符的子串组合）  
+
+比如字符串 ABCDABD:
+
+i| 0 | 1 | 2 | 3 | 4 | 5 | 6
+:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:
+模式串| A | B | C | D | A | B| D
+next| -1 | 0 | 0 | 0 | 0 | 1 | 2
+
+* i = 0, 统一设置next[0] = -1
+* i = 1, 前面的字符串 <font color="hotpink">A</font>, 相同的前后缀长度为0，next[1] = 0
+* i = 2, 前面的字符串 <font color="hotpink">AB</font>, 相同的前后缀长度为0，next[2] = 0
+* i = 3, 前面的字符串 <font color="hotpink">ABC</font>, 相同的前后缀长度为0，next[3] = 0
+* i = 4, 前面的字符串 <font color="hotpink">ABCD</font>, 相同的前后缀长度为0，next[4] = 0
+* i = 5, 前面的字符串 <font color="hotpink">ABCDA</font>, 相同的前后缀为<font color="hotpink">A</font>，next[5] = 1
+* i = 6, 前面的字符串 <font color="hotpink">ABCDAB</font>, 相同的前后缀为<font color="hotpink">AB</font>，next[6] = 2
+
+得到next数组后，直接匹配目标字符串即可，算法复杂度O(m)，m为目标字符串的长度
+
+# 代码
+
+```python
+def get_next(ps):
+    ps = list(ps)
+    next_ = [0] * len(ps)
+    next_[0] = -1
+    j = -1
+    i = 0
+    while i < len(ps) - 1:
+        if j == -1 or ps[i] == ps[j] or ps[i] == '?' or ps[j] == '?':
+            i += 1
+            j += 1
+            next_[i] = j
+        else:
+            j = next_[j]
+    return next_
+def search(str_, ps):
+    next_ = get_next(ps)
+    i,j = 0, 0
+    cnt = 0
+    while i < len(str_):
+        if j == len(ps):
+            j = 0
+            cnt += 1
+        if j == -1 or str_[i] == ps[j] or ps[j] == '?':
+            i += 1
+            j += 1
+        else:
+            j = next_[j]
+    if j == len(ps):
+        cnt += 1
+    return cnt
+s = input()
+p = input()
+print(search(s, p))
+```
+
+next数组生成过程如下
+
+    ps    A B C D A B D '\0'
+    next  -1 0 0 0 0 1 2 0
+    i = 0, j = -1, next = [-1]
+    i = 1, j = 0, next = [-1, 0]
+    i = 1, j = -1, next = [-1, 0]
+    i = 2, j = 0, next = [-1, 0, 0]
+    i = 2, j = -1, next = [-1, 0, 0]
+    i = 3, j = 0, next = [-1, 0, 0, 0]
+    i = 3, j = -1, next = [-1, 0, 0, 0]
+    i = 4, j = 0, next = [-1, 0, 0, 0, 0]
+    i = 5, j = 1, next = [-1, 0, 0, 0, 0, 1]
+    i = 6, j = 2, next = [-1, 0, 0, 0, 0, 1, 2]
