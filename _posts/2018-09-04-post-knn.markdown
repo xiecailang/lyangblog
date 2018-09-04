@@ -21,13 +21,13 @@ tags:
 
 通常使用 **欧式距离** ，当然也有其他的距离度量  
 假设$$x_i,x_j$$属于$$n$$维的实数向量空间，$$x_i = (x_i^{(1)}, x_i^{(2)},...,x_i^{(n)})^\mathrm{T}, x_j = (x_j^{(1)}, x_j^{(2)},...,x_j^{(n)})^\mathrm{T}$$，那么$$x_i, x_j$$的$$L_p$$距离度量定义为：  
-<center>L_p(x_i, x_j) = (\sum_{l = 1}^{n}\mid{}x_i^{(l)}-x_j^{(l)}\mid^p)^{\frac{1}{p}}</center>  
+<center>$$L_p(x_i, x_j) = (\sum_{l = 1}^{n}\mid{}x_i^{(l)}-x_j^{(l)}\mid^p)^{\frac{1}{p}}$$</center>  
 这里$$p\leq 1$$  
 
 1. 当$$p = 2$$时，称为欧式距离
 2. 当$$p = 1$$时，称为曼哈顿距离
-3. 当$$p = \inf$$时，它是各坐标距离的最大值，即  
-<center>$$L_{\inf}(x_i, x_j) = \mathrm{max}\mid x_i^{(l)} - x_j^{(l)}\mid$$</center>  
+3. 当$$p = \infty$$时，它是各坐标距离的最大值，即  
+<center>$$L_{\infty}(x_i, x_j) = \mathrm{max}\mid x_i^{(l)} - x_j^{(l)}\mid$$</center>  
 
 # k值的选择
 
