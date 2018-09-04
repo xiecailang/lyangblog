@@ -181,4 +181,4 @@ print(closest_node)
 ```
 
 效果图：
-[输出](../img/0904.png)
+![输出](../img/0904.png)
