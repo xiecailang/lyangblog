@@ -1,0 +1,184 @@
+---
+layout:     post
+title:      "k近邻算法实现"
+subtitle:   " \"机器学习\""
+date:       2018-09-04 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+>k近邻：基于测试集 **T** 和他们的分类 **L** ，给出目标点 **S**，寻找距离目标点最近的 $$k$$ 个点，这$$k$$中占多数的一类就判断为 **S** 的分类
+
+# 模型
+
+当训练集、距离度量、$$k$$值和分类决策树确定后，对于任何一个输入的新实例，它所属的分类可以唯一确定。通过找出距离最近的$$k$$个点，占多数的点的分类即为新实例的分类，当$$k=1$$时，就是 **KNN** （K最近邻）
+
+# 距离度量
+
+通常使用 **欧式距离** ，当然也有其他的距离度量  
+假设$$x_i,x_j$$属于$$n$$维的实数向量空间，$$x_i = (x_i^{(1)}, x_i^{(2)},...,x_i^{(n)})^\mathrm{T}, x_j = (x_j^{(1)}, x_j^{(2)},...,x_j^{(n)})^\mathrm{T}$$，那么$$x_i, x_j$$的$$L_p$$距离度量定义为：  
+<center>L_p(x_i, x_j) = (\sum_{l = 1}^{n}\mid{}x_i^{(l)}-x_j^{(l)}\mid^p)^{\frac{1}{p}}</center>  
+这里$$p\leq 1$$  
+
+1. 当$$p = 2$$时，称为欧式距离
+2. 当$$p = 1$$时，称为曼哈顿距离
+3. 当$$p = \inf$$时，它是各坐标距离的最大值，即  
+<center>$$L_{\inf}(x_i, x_j) = \mathrm{max}\mid x_i^{(l)} - x_j^{(l)}\mid$$</center>  
+
+# k值的选择
+
+$$k$$值选择 | 优点 | 缺点
+较小 | 近似误差减小，只有距离预测点近的训练点起作用 | 估计误差增大，对近邻的训练点敏感
+较大 | 减小估计误差 | 增大近似误差，距离较远的也会起作用
+
+* $$k = N$$时，无论输入什么实例，都简单预测为训练实例中最多的类，模型过于简单，忽略了大量有用信息
+* 在实际应用中，$$k$$一般取一个较小的值，通过交叉验证来选取最合适的$$k$$值
+
+# kd树构造
+
+k近邻算法最关键的是对训练数据快速搜索k个近邻点，简单的可以通过遍历，计算预测点与每个训练点的距离，当训练集太大就非常耗时  
+通过kd树（二叉树）可以将搜索的平均复杂度降到$$O(\log{}N)$$, 构造步骤如下  
+
+对于$$k$$维的训练集$$T = {x_1, x_2,..., x_N}$$  
+其中$$x_i = (x_i^{(1)}, x_i^{(2)}, ..., x_i^{(k)}), i = 1, 2, ..., N$$  
+
+1. 构造根节点：选择$$x^{(1)}$$为坐标轴，以训练集$$T$$中的$$x_i^{(1)}的 **中位数** 为切分点，且作为根节点，小于的作为左子树，大于的作为右子树
+2. 重复，递归：每次选择切分点的维度跟二叉树的深度相关，$$l=j(\mathrm{mod}k) + 1$$，$$j$$表示当前节点的深度
+
+# kd树搜索
+
+输入：kd树，目标点x  
+输出：x的最近邻点  
+
+1. 从根节点出发，比较目标点x与节点在维度$$l=j(\mathrm{mod}k) + 1$$值的大小，小于则继续搜索左子树，大于则搜索右子树，直到找到叶子节点，此时，将此叶子节点作为最近邻点
+2. 递归回退，对每个当前节点做以下操作
+    1. 比较当前节点与已保存的最近邻点与目标点x的距离，如果当前点距离更近，则更新当前点为最近邻点
+    2. 如果当前点为最近邻点，则比较其父节点的另外一个点是否距离目标点更近，如果更近则递归搜索另外一个节点
+3. 当递归回退到根节点，搜索结束
+   
+# 代码
+
+**需要注意，在步骤2.2中，要寻找父节点的另外一个节点，递归获取当前节点的父节点复杂度太高，可以用一个数组保存遍历的路径**
+
+```python
+#k近邻算法
+import numpy as np
+#曼哈顿距离
+def distance(x1, x2, p):
+    if p < np.inf:
+        return np.power(np.sum(np.power(np.abs(x1 - x2), p)), 1/p)
+    else:
+        return np.max(abs(x1 - x2))
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+#构造kd树
+def build_kd_tree(data, depth):
+    #sorted(data, key = lambda x:x[di])
+    if data.size == 0:
+        return None
+    di = depth % data.shape[1]#维度 = 深度 mod 总维度
+    data = data[data[:, di].argsort()]#按维度排序
+    mid_index = int(len(data)/2)#中位数
+    head = Node(data[mid_index])
+    if data.shape[0] == 1:
+        return head 
+    #递归构造左右子树
+    head.left = build_kd_tree(data[0:mid_index], depth+1)
+    head.right = build_kd_tree(data[mid_index+1:len(data)], depth+1)
+    return head
+#前序遍历kd树
+def print_tree(head):
+    if head == None:
+        return None
+    print(head.val, end=', ')
+    print_tree(head.left)
+    print_tree(head.right)
+
+def in_circle(target, source, r):
+    distance = np.sqrt(np.sum([i**2 for i in [target - source]]))
+    if distance < r:
+        return True
+    else:
+        return False
+#搜索kd树
+def find_closest(head, depth, node, closest_node, parent_node):
+    parent_node.append(head)
+    if head == None or (head.left == None and head.right == None):
+        return head
+    di = depth % data.shape[1]
+    
+    is_left = True
+    #寻找叶子节点，设叶子节点为最近点
+    if node.val[di] <= head.val[di]:
+        closest_node = find_closest(head.left, depth+1, node,closest_node, parent_node)        
+    else:
+        is_left = False
+        closest_node = find_closest(head.right, depth + 1, node, closest_node, parent_node)
+    #比较当前点和叶子，如果当前点距离更近，则当前点为最近点
+    if distance(head.val, node.val, 2) < distance(closest_node.val, node.val, 2):
+        parent_node.pop()
+        closest_node = head
+    #如果当前是父节点，返回
+    if len(parent_node) == 1:
+        return closest_node
+    #查找当前点的父节点的另一个子节点是否更近
+    r = distance(closest_node.val, node.val, 2)
+    parent = parent_node[len(parent_node) - 2]
+    if is_left:
+        right = parent.right
+        r_dis = distance(right.val, closest_node.val, 2)
+        if r_dis < r:
+            parent_node.pop()
+            find_closest(right, depth, node, closest_node, parent_node)
+        else:
+            return closest_node
+    else:
+        left = parent.left
+        l_dis = distance(left.val, closest_node.val, 2)
+        if l_dis < r:
+            parent_node.pop()
+            find_closest(left, depth, node, closest_node, parent_node)
+        else:
+            parent_node.pop()
+            return closest_node
+
+    
+#x1, x2, x3 = np.array([2, 3]), np.array([5, 4]), np.array([9, 6], np.array([4, 7], np.array([8, 1], np.array([7, 2])
+data = np.array([[2, 3], [5, 4], [9, 6], [4, 7], [8, 1], [7, 2]])
+head = build_kd_tree(data, 0)
+node = Node([4, 6])
+parent_node = []
+closest_node = Node(float('inf'))
+closest_node = find_closest(head, 0, node, closest_node, parent_node)
+
+#print_tree(head.val)
+import matplotlib.pyplot as plt
+x = []
+y = []
+for d in data:
+    x.append(d[0])
+    y.append(d[1])
+    
+t_x = node.val[0]
+t_y = node.val[1]
+
+n_x = closest_node.val[0]
+n_y = closest_node.val[1]
+
+plt.scatter(x, y)
+plt.scatter(t_x, t_y, color='red')
+plt.scatter(n_x, n_y, color='green')
+plt.show()
+print(closest_node)
+```
+
+效果图：
+[输出](../img/0904.png)
