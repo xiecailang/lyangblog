@@ -19,10 +19,10 @@ TF-IDF (term frequency-inverse document frequency)一般用于资讯检索与资
 <center>$$tf_{i,j} = \frac{n_{i, j}}{\sum_{k}^{}n_{k, j}}$$</center>  
 其中$$n_{i, j}$$表示该词$$t_i$$在文件$$d_j$$中出现的次数，而分母表示文件$$d_j$$所有字词出现次数之和  
 **IDF** 逆向文件频率，一个词语普遍重要性的度量，它可以由总文件数目除以包含该词的文件数目，再将该结果取对数得到  
-<center>idf_i = \log\frac{\mid D \mid}{\mid \{ j:t_i \in d_j\} \mid}</center>  
+<center>$$idf_i = \log\frac{\mid D \mid}{\mid \{ j:t_i \in d_j\} \mid}$$</center>  
 其中$$\mid D \mid$$ 表示语料库中文件的总数，分母表示包含词语$$t_j$$的文件数目，为了防止分母出现0，一般使用$$1 + \mid \{ j:t_i \in d_j\} \mid$$做分母  
 然后可得  
-<center>tfidf_{i, j} = tf_{i,j} \times idf_i</center>
+<center>$$tfidf_{i, j} = tf_{i,j} \times idf_i$$</center>
 
 # HMM模型和Viterbi算法
 
