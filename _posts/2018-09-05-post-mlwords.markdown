@@ -35,12 +35,12 @@ Viterbi算法用于解决HMM的搜索最短路径问题
 
 # Xavier初始化方法
 
-参考[深度学习——Xavier初始化方法](https://blog.csdn.net/shuzfan/article/details/51338178)
+参考[深度学习——Xavier初始化方法](https://blog.csdn.net/shuzfan/article/details/51338178)  
 Xavier初始化方法是一种很有效的神经网络初始化方法，为了使得网络中信息更好的流动，每一层输出的方差应该尽量相等。基于这个目标，现在我们就去推导一下：每一层的权重应该满足哪种条件。
 
 # Encoder-Decoder
 
-参考[深度学习方法（八）：自然语言处理中的Encoder-Decoder模型，基本Sequence to Sequence模型](https://blog.csdn.net/xbinworld/article/details/54605408)
+参考[深度学习方法（八）：自然语言处理中的Encoder-Decoder模型，基本Sequence to Sequence模型](https://blog.csdn.net/xbinworld/article/details/54605408)  
 Encoder-Decoder并不是一个具体的模型，而是一个框架。比如无监督算法的auto-encoding就是用编码-解码的结构设计并训练的；比如这两年比较热的image caption的应用，就是CNN-RNN的编码-解码框架；再比如神经网络机器翻译NMT模型，往往就是LSTM-LSTM的编码-解码框架  
 所谓的编码，就是将输入序列转化成一个固定长度的向量；解码，就是将之前生成的固定向量再转化成输出序列
 
@@ -80,7 +80,7 @@ Boosting | 每一轮的训练集不变，只是训练集中每个样例在分类
 
 # 生成模型
 
-参考[生成模型（Generative）和判别模型（Discriminative）](https://www.cnblogs.com/realkate1/p/5683939.html)
+参考[生成模型（Generative）和判别模型（Discriminative）](https://www.cnblogs.com/realkate1/p/5683939.html)  
 Generative Modeling是由训练数据学习联合概率分布P(X,Y)，然后求出条件概率分布P(Y|X)作为预测的模型。之所以叫生成模型，是因为模型表示了给定输入X产生输出Y的生成关系  
 Discriminative Modeling（判别模型）是由训练数据直接学习决策函数f(X)或者条件概率分布P(X,Y)作为预测的模型，模型关心的是对给定的输入X，应该预测什么样的输出Y，与GM的不同在于不需要先学习出联合分布P(X,Y)
 
