@@ -18,7 +18,7 @@ tags:
 感知机模型表示为：
 <center>$$f(x) = \mathrm{sign}(wx+b)$$</center>
 其中$$w,b$$是感知机模型参数，分别表示分割数据的超平面的法向量和截距，学习的过程就是通过训练测试数据得到最优的$$w,b$$。  
-<center>$$\mathrm{sign}=\left\{\begin{array}{ll}+1, & x\leq{}0 \\ -1, & x<0 \end{array}$$</center> 
+<center>$$\mathrm{sign}=\{\begin{array}{ll}+1, & x\leq{}0 \\ -1, & x<0 \end{array}$$</center> 
 数据要求线性可分，满足对于所有$$y_i = +1$$时，有$$wx_i+b>0$$，对所有$$y_i = -1$$，有$$wx_i+b<0$$
 
 # 学习策略
