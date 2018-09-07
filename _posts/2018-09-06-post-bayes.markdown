@@ -37,7 +37,7 @@ $$P(w_2 \mid x) = \frac{P(x\mid w_2)P(w_2)}{P(x)} = \frac{2}{5}$$
 
 根据文氏图来推导  
 
-<center>![img1][ab]</center> 
+![img1][ab]
 
 从图中可以看出，在已知事件B发生的情况下，事件A发生的概率   
 <center>$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$</center>  
@@ -47,7 +47,7 @@ $$P(w_2 \mid x) = \frac{P(x\mid w_2)P(w_2)}{P(x)} = \frac{2}{5}$$
 
 考虑整个样本空间S  
 
-<center>![img2][abs]</center>  
+![img2][abs]
 
 除图中标注事件外，我们记$$A'$$为事件A没发生的概率，我们将事件B划分为两个部分$$P(B) = P(A \cap B) + P(A' \cap B)$$，上面已经推导了$$P(A \cap B) = P(B \mid A)P(A)$$，带入可得全概率$$P(B) = P(B \mid A)P(A) + P(B \mid A')P(A')$$，这就可以得到条件概率的另一种写法：  
 <center>$$P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A')P(A')}$$</center>  
