@@ -36,7 +36,9 @@ $$P(w_2 \mid x) = \frac{P(x\mid w_2)P(w_2)}{P(x)} = \frac{2}{5}$$
 <center>$$P(B_i \mid A) = \frac{P(B_i)P(A \mid B_i)}{\sum_{k=1}^{n}P(B_k)P(A \mid B_k)}$$</center>  
 
 根据文氏图来推导  
-<center>![img1][ab]</center>  
+
+<center>![img1][ab]</center> 
+
 从图中可以看出，在已知事件B发生的情况下，事件A发生的概率   
 <center>$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$</center>  
 因此，$$P(A \cap B) = P(A \mid B)P(B)$$  
@@ -44,7 +46,9 @@ $$P(w_2 \mid x) = \frac{P(x\mid w_2)P(w_2)}{P(x)} = \frac{2}{5}$$
 联合可得条件概率计算公式$$ P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}$$  
 
 考虑整个样本空间S  
+
 <center>![img2][abs]</center>  
+
 除图中标注事件外，我们记$$A'$$为事件A没发生的概率，我们将事件B划分为两个部分$$P(B) = P(A \cap B) + P(A' \cap B)$$，上面已经推导了$$P(A \cap B) = P(B \mid A)P(A)$$，带入可得全概率$$P(B) = P(B \mid A)P(A) + P(B \mid A')P(A')$$，这就可以得到条件概率的另一种写法：  
 <center>$$P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A')P(A')}$$</center>  
 推广到$$n$$个事件于是得到了开始给出的贝叶斯公式
@@ -61,7 +65,7 @@ $$P(w_2 \mid x) = \frac{P(x\mid w_2)P(w_2)}{P(x)} = \frac{2}{5}$$
     1.  假设$$G=$$好评，$$B=$$差评，则先验概率为$$P(G), P(B)$$，可以假设都为50\%，即0.5
     2.  假设输入语句中出现单词$$W_i$$，则计算条件概率需要统计好评中$$W_i$$出现的语句次数，比如在好评中有20句包含单词“good”，则条件概率$$P(W='good' \mid G) = 20/40 = 0.5$$
 2. 对于给定的实例$$W = (w_1, w_2, ..., w_n)$$，计算后验概率
-<center>$$P(G \mid W) = \frac{P(G)\prod_{i=1}^{n}P(W_i \mid G)}{\sum_{k = 1}^{n}P(G)\prod_{j=1}^{n}P(W_j \mid G)$$</center>  
+<center>$$P(G \mid W) = \frac{P(G)\prod_{i=1}^{N}P(W_i \mid G)}{\sum_{k = 1}^{N}P(G)\prod_{j=1}^{n}P(W_j \mid G)}$$</center>  
 对于所有的单词$$W_i$$，上式的分母都是一样的，所以只需要对比分子的大小  
 
 **代码**
@@ -110,7 +114,7 @@ print('good' if ans_p_good > ans_p_bad else 'bad')
 <center>$$P_\lambda(Y = c_k) = \frac{\sum_{i = 1}^{N}I(y_i = c_k) + \lambda}{N+K\lambda}$$</center>
 
 2. 条件概率  
-<center>$$P_{\lambda}(X^{(J)} = a_{jl} \mid Y = c_k) = \frac{\sum_{i = 1}^{N}I(x_i^{(j)} = a_{jl}, y_i = c_k) + \lambda}{\sum_{i = 1}^{N}I(y_i = c_k)} + S_j\lambda$$</center>
+<center>$$P_{\lambda}(X^{(J)} = a_{jl} \mid Y = c_k) = \frac{\sum_{i = 1}^{N}I(x_i^{(j)} = a_{jl}, y_i = c_k) + \lambda}{\sum_{i = 1}^{N}I(y_i = c_k) + S_j\lambda}$$</center>
 
 上式中，$$\lambda \geq 0$$，当$$\lambda = 0$$时，就是极大似然估计，当$$\lambda = 1$$时，称为拉普拉斯平滑。$$I()$$是求满足条件的样本出现次数。
 
