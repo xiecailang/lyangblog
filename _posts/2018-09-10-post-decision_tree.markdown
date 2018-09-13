@@ -189,5 +189,35 @@ print_tree_hor(head_ratio)
 '''
 ```
 
+# CART（classification and regression tree）算法
 
+**分类树** 和 **回归树**  
 
+1. 分类树，使用最大熵的一半，或者基尼指数最小作为特征选择的分割点
+2. 回归树，使用最小化均方差作为衡量标准
+
+基尼指数：$$\mathrm{Gini}(p) = \sum_{k = 1}^{K}p_k(1-p_k) = 1 - \sum_{k = 1}^{K}p_k^2$$  
+均方差：$$\sum_{x_i \in R_m}(y_i - f(x_i))^2$$  
+
+详细参考[决策树(分类树、回归树)](https://blog.csdn.net/weixin_36586536/article/details/80468426)
+
+# 剪枝
+
+过程：首先从生成算法产生的决策树$$T_0$$底端开始不断剪枝，直到根节点，形成一个子树序列$${T_0, T_1, ..., T_n}$$，然后通过交叉验证法在独立的验证数据集上对子树序列进行测试，从中选择最优子树  
+计算子树的损失函数：$$C_\alpha = C(T) + \alpha \mid T \mid$$  
+$$T$$为任意子树，$$C(T)$$为对训练参数的预测误差（比如基尼指数）,$$\mid T \mid$$为子树的叶节点个数，$$\alpha \geq 0$$为参数  
+算法过程：  
+输入：CART算法生成的决策树$$T_0$$  
+输出：最优决策树$$T_\alpha$$  
+
+1. $$k = 0, T = T_0$$
+2. $$\alpha = +\infinity$$
+3. 自下而上对内部节点$$t$$计算$$C(T_t), \mid T_t \mid$$以及
+
+<center>$$g(t) = \frac{C(t) - C(T_t)}{\mid T_t \mid - 1}$$</center>  
+<center>$$\alpha = min(\alpha, g(t))$$</center>  
+
+4. 对$$g(t) = \alpha$$的内部节点$$t$$进行剪枝，并对叶节点$$t$$用多数表决法决定其分类，得到树$$T$$
+5. $$k = k + 1, \alpha_k = \alpha, T_k = T$$
+6. 如果$$T_k$$不是由根节点和两个叶节点构成的树，则回到步骤3；否则令$$T_k = T_n$$
+7. 采用交叉验证法在子树序列$$T_0, T_1, ..., T_n$$中选择最优子树$$T_\alpha$$
