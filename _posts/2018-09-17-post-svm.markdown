@@ -42,4 +42,12 @@ $$\mathrm{s.t.} y_i (wx_i + b) - 1 \geq 0, i = 1, 2, \cdot, N$$
 
 # 对偶算法
 
+把求解线性可分SVM最优化问题作为原始问题，利用**拉格朗日对偶性**，通过求解对偶问题来得到原始问题的最优解  
+首先，引入拉格朗日乘子$$\alpha_i \geq 0$$，构建拉格朗日函数：  
+$$L(w, b, \alpha) = \frac{1}{2}\parallel w \parallel^2 - \sum_{i = 1}^{N}\alpha_iy_i(wx_i + b) + \sum_{i=1}^{N}\alpha_i$$  
+根据拉格朗日对偶性，原始问题的队友问题就是极大极小问题  
+$$\max_{\alpha}\min_{w,b}L(w, b, \alpha)$$  
+问了得到对偶问题的解，先求$$L(w, b, \alpha)$$对$$(w, b)$$的极小值，再求对$$\alpha$$的极大值
+
+
 
