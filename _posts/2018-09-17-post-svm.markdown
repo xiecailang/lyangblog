@@ -1,0 +1,45 @@
+---
+layout:     post
+title:      "支持向量机SVM"
+subtitle:   " \" 统计学习方法\""
+date:       2018-09-17 10:00:00
+author:     "lang"
+header-img: "http://lyang-blog-pics.oss-cn-shanghai.aliyuncs.com/post-bg-2017/0330/170330.jpg"
+
+catalog: true
+tags:
+    - Tech
+---
+
+# 模型
+
+给定线性可分的训练数据集，通过**间隔最大化**学习到的超平面为  
+<center>$$w^* x + b^*$$</center>  
+以及相应的分类决策函数  
+<center>$$f(x) = \mathrm{sign}(w^* x + b^*)$$</center>  
+称为线性可分支持向量机
+
+# 函数间隔和几何间隔
+
+**函数间隔**  
+<center>$$\hat{\gamma}_i = y_i(wx_i + b)$$</center>  
+选择超平面仅有函数间隔是不够的，因为只要成比例的改变$$w$$和$$b$$，比如$$2w, 2b$$，此时超平面并没有改变，但是函数间隔却变成原来的2倍，因此我们需要对法向量$$w$$加以约束，比如 **规范化**，函数间隔就变成了 **几何间隔**  
+点$$x_i$$与超平面$$(w, b)$$的几何间隔为  
+<center>$$\gamma_i = y_i (\frac{w}{\parallel w \parallel}x_i + \frac{b}{\parallel w \parallel})$$</center>  
+其中$$\parallel w \parallel$$是$$w$$的$$L_2$$范数。
+
+# 最大间隔求超平面
+
+约束最优化原始问题  
+$$\max_{w, b} \gamma$$  
+$$\mathrm{s.t.} y_i (\frac{w}{\parallel w \parallel}x_i + \frac{b}{\parallel w \parallel}) \geq \gamma, i = 1, 2, \cdot, N$$  
+根据几何间隔和函数间隔的关系，问题可以改写为  
+$$\max_{w, b} \frac{\hat{\gamma}}{\parallel w \parallel}$$  
+$$\mathrm{s.t.} y_i (wx_i + b) \geq \hat{\gamma}, i = 1, 2, \cdot, N$$  
+函数间隔$$\hat{\gamma}$$的取值不会影响最优化问题的解，这就可以取$$\hat{\gamma} = 1$$，并且最大化$$\frac{1}{\parallel w \parallel}$$等价于最小化$$\frac{1}{2}\parallel w \parallel^2$$，于是得到等价最优化问题  
+$$\min_{w, b} \frac{1}{2}\parallel w \parallel^2$$  
+$$\mathrm{s.t.} y_i (wx_i + b) - 1 \geq 0, i = 1, 2, \cdot, N$$  
+
+# 对偶算法
+
+
