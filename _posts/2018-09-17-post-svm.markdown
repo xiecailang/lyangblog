@@ -65,8 +65,13 @@ tags:
 其中  
 <center>$$L(y(wx + b)) = [1-y(wx + b)]_+$$</center>  
 称为**合页损失函数**，下标 + 表示取正值函数  
-<center>$$[z]_+ = \left\{ \begin{array}{ll} z, & z > 0 \\ 0, & z \leq 0 \end{array}\right$$</center>  
+<center>$$[z]_+ = \left\{ \begin{array}{ll} z, & z > 0 \\ 0, & z \leq 0 \end{array}\right.$$</center>  
 这就是说，如果样本点$$(x_i, y_i)$$被正确分类且函数间隔$$y_i(wx_i + b)$$大于1时，损失为0，否则损失就是$$1-y_i(wx_i + b)$$。
 
 # 非线性支持向量机与核函数
 
+常用核函数
+
+1. 多项式核函数
+2. 高斯核函数
+3. 字符串核函数
