@@ -41,7 +41,7 @@ tags:
 3. $$word1$$的前$$i-1$$个字符串与$$word2$$的前$$j-1$$个字符串已经操作完成，最小操作数为$$D(i-1, j-1)$$，如果$$word1[i] \neq word2[j]$$那么将$$word1$$的第$$i$$个字母替换成$$word2$$的第$$j$$个字母，有可能使得$$word1$$前$$i$$个字符串与$$word2$$前$$j$$个字符串相同，操作数为1; 如果$$word1[i] = word2[j]$$那么不需要操作$$word1$$前$$i$$个字符串与$$word2$$前$$j$$个字符串已经相同，操作数为0
 
 以上可以写出递归公式：  
-<center>$$D(i, j) = \min\left\{\begin{array}{ll}D(i - 1, j) + 1 & \\D(i, j - 1) & \\ D(i - 1, j - 1) + & \left\{\begin{array}{ll} 2 & \textrm{if $word1[i] \neq word2[j]$} \\ 0 & \textrm{if $word1[i] = word2[j]$} \end{array} \right. \end{array} \right.$$</center>
+<center>$$D(i, j) = \min\left\{\begin{array}{ll}D(i - 1, j) + 1 & \\D(i, j - 1) & \\ D(i - 1, j - 1) + & \left\{\begin{array}{ll} 1 & \textrm{if $word1[i] \neq word2[j]$} \\ 0 & \textrm{if $word1[i] = word2[j]$} \end{array} \right. \end{array} \right.$$</center>
 
 # 代码
 
