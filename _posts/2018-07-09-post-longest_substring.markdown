@@ -28,23 +28,23 @@ Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer 
 
 ```Python
 def lengthOfLongestSubstring(self, s):
-        """
-        :type s: str
-        :rtype: int
-        """
-        if(len(s) == 0):
-            return 0
-        if(len(s) == 1):
-            return 1
-        dic = {}
-        dic[s[0]] = 0
-        pre_index = 0
-        max_ = 1
-        for cur_index in range(1, len(s)):
-            if s[cur_index] in dic and dic[s[cur_index]] >= pre_index:
-                pre_index = min(cur_index, dic[s[cur_index]] + 1)                          
-            dic[s[cur_index]] = cur_index                
-            max_ = max(cur_index - pre_index + 1, max_)
+    """
+    :type s: str
+    :rtype: int
+    """
+    if(len(s) == 0):
+        return 0
+    if(len(s) == 1):
+        return 1
+    dic = {}
+    dic[s[0]] = 0
+    pre_index = 0
+    max_ = 1
+    for cur_index in range(1, len(s)):
+        if s[cur_index] in dic and dic[s[cur_index]] >= pre_index:
+            pre_index = min(cur_index, dic[s[cur_index]] + 1)                          
+        dic[s[cur_index]] = cur_index                
+        max_ = max(cur_index - pre_index + 1, max_)
 
-        return max_
+    return max_
 ```
