@@ -69,7 +69,7 @@ ga_domain: lyang.tech
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "写代码，做设计，看产品 | 看论文，做实验"
+sidebar-about-description: "Fall in love 23th Oct., 2013\r\nPropose on 3th Oct., 2018"
 sidebar-avatar: /img/our_two.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
