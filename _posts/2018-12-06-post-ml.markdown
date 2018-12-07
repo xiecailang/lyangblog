@@ -14,7 +14,7 @@ tags:
 # 线性回归
 
 预测函数  
-<center>$$y_i = \beta_0 + \beta_1x_{i1} + \dot + \beta_px_{ip} + \epsilon$$</center>  
+<center>$$y_i = \beta_0 + \beta_1x_{i1} + \dots + \beta_px_{ip} + \epsilon$$</center>  
 其中$$\epsilon$$为噪声，可以用矩阵形式表示：  
 <center>$$\mathbf{Y} = \mathbf{X}\beta + \epsilon$$</center>  
 **最小二乘法**最小化误差的平方和来求解最佳预测函数  
