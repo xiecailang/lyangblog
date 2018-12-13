@@ -20,9 +20,9 @@ tags:
 # 目标函数
 
 多元线性回归（Linear regression）模型：  
-<center>$$Y_i = w_0 + w_1 x_{i1} + \dotes + w_p x_{ip} + \epsilon_i,  i = 1, 2, \dots, n$$</center>  
+<center>$$Y_i = w_0 + w_1 x_{i1} + \dots + w_p x_{ip} + \epsilon_i,  i = 1, 2, \dots, n$$</center>  
 其最小二乘法估计模型：
-<center>$$OLS(w) = \sum_{i = 0}^{N}(y_i - \sum_{j=0}^{D}w_jx_{ij})$$</center>  
+<center>$$OLS(w) = \sum_{i = 0}^{N}(y_i - \sum_{j=0}^{D}w_jx_{ij})^2$$</center>  
 添加了$$L_1$$惩罚的Lasoo回归：  
 <center>$$LASSO(w) = OLS(w) + \lambda\sum_{j=0}^{D}\mid w_j \mid$$</center>  
 求解这个回归模型即求解$$argmin LASSO(w)$$ 的权值$$\hat{w}_j$$.
@@ -32,27 +32,27 @@ tags:
 先对最小二乘法模型$$OLS$$求导：  
 <center>$$\begin{align*}\frac{\partial OLS}{\partial w_j} &= -2\sum_i x_{ij}(y_i - \sum_j w_j x_{ij}) \\ &= -2\sum_i x_{ij}(y_i - \sum_{k\neq j}w_k x_{ik} - w_jx_{ij}) \\ &=  -2\sum_i x_{ij}(y_i - \sum_{k\neq j}w_k x_{ik}) + 2w_j\sum_j x_{ij}^2\end{align*}$$</center>   
 令$$\rho_j = \sum_i x_{ij}(y_i - \sum_{k\neq j}w_k x_{ik})$$  
-令$$\z_j = \sum_j x_{ij}^2$$  
+令$$z_j = \sum_j x_{ij}^2$$  
 于是  
 <center>$$\frac{\partial OLS}{\partial w_j} = 2w_jz_j - 2\rho_j$$</center>
 
 与Ridge等模型不一样的是，对$$LASSO(w)$$直接使用梯度下降会发现函数在0处不可导，因为$$\mid w_j \mid$$在0处不可导，因此这里需要用**次梯度方法**。  
 考虑$$f(x) = \mid x \mid$$，其在0点的次导数区间为[-1, 1],其导数可以写成：  
-<center>$$\frac{\partial f}{\partial x} = \left\{ \begin{array}{lll} -1, & x \leq 0 \\ [-1, 1], & x = 0 \\ 1, & x > 0 \end{array}\right.$$</center>  
+<center>$$\frac{\partial f}{\partial x} = \left\{ \begin{array}{lll} -1, & x < 0 \\ [-1, 1], & x = 0 \\ 1, & x > 0 \end{array}\right.$$</center>  
 因此对正则项$$\lambda \mid w_j \mid$$求导可以写成：  
-<center>$$\lambda\frac{\partial \mid w_j \mid}{\partial w_j} = \left\{ \begin{array}{lll} -\lambda, & w_j \leq 0 \\ [-\lambda, \lambda], & w_j = 0 \\ \lambda, & x > 0 \end{array}\right.$$</center>  
+<center>$$\lambda\frac{\partial \mid w_j \mid}{\partial w_j} = \left\{ \begin{array}{lll} -\lambda, & w_j < 0 \\ [-\lambda, \lambda], & w_j = 0 \\ \lambda, & w_j > 0 \end{array}\right.$$</center>  
 于是对$$LASSO(w)$$求导可得：  
-<center>$$\frac{\partial LASSO}{\partial w_j} = 2w_jz_j - 2\rho_j + \left\{ \begin{array}{lll} -\lambda, & w_j \leq 0 \\ [-\lambda, \lambda], & w_j = 0 \\ \lambda, & x > 0 \end{array}\right.$$</center>  
+<center>$$\frac{\partial LASSO}{\partial w_j} = 2w_jz_j - 2\rho_j + \left\{ \begin{array}{lll} -\lambda, & w_j < 0 \\ [-\lambda, \lambda], & w_j = 0 \\ \lambda, & w_j > 0 \end{array}\right.$$</center>  
 化简得  
-<center>$$\frac{\partial LASSO}{\partial w_j} = \left\{ \begin{array}{lll} 2z_jw_j - 2\rho - \lambda, & w_j \leq 0 \\ [-2\rho_j - \lambda, -2\rho_j + lambda], & w_j = 0 \\ 2z_jw_j - 2\rho_j + \lambda, & x > 0 \end{array}\right.$$</center>  
+<center>$$\frac{\partial LASSO}{\partial w_j} = \left\{ \begin{array}{lll} 2z_jw_j - 2\rho - \lambda, & w_j < 0 \\ [-2\rho_j - \lambda, -2\rho_j + lambda], & w_j = 0 \\ 2z_jw_j - 2\rho_j + \lambda, & w_j > 0 \end{array}\right.$$</center>  
 令$$\frac{\partial LASSO}{\partial w_j} = 0$$求解可得  
-<center>$$\hat{w}_j = \left\{ \begin{array}{lll} (\rho_j + \frac{\lambda}{2})/z_j, & \rho_j \leq -\frac{\lambda}{2} \\ 0, & \rho_j \in [ -\frac{\lambda}{2},  \frac{\lambda}{2}] \\ (\rho_j - \frac{\lambda}{2})/z_j, & \rho_j > -\frac{\lambda}{2} \end{array}\right.$$</center>  
+<center>$$\hat{w}_j = \left\{ \begin{array}{lll} (\rho_j + \frac{\lambda}{2})/z_j, & \rho_j < -\frac{\lambda}{2} \\ 0, & \rho_j \in [ -\frac{\lambda}{2},  \frac{\lambda}{2}] \\ (\rho_j - \frac{\lambda}{2})/z_j, & \rho_j > -\frac{\lambda}{2} \end{array}\right.$$</center>  
 **注意后面$$\rho_j$$跟$$\lambda$$范围限定隐含了$$z_j > 0$$**  
 
 ![img1][rho]
 
-从图中可以看出，随着因子$$\lambda$$增大，加大了对目标函数的惩罚，估计的$$\hat{w}_j$$值出现很多0值，这也是为什么$$L_1$$正则会使得模型稀疏。换而言之，权重$$w_j = 0$$意味着特征$$x_ij$$被抛弃，因此$$L_1$$也可以用来做特征选择。  
-值得注意的是，以上过程可以用矩阵形式更快求解。
+从图中可以看出，**随着因子$$\lambda$$增大，加大了对目标函数的惩罚，估计的$$\hat{w}_j$$值出现很多0值，这也是为什么$$L_1$$正则会使得模型稀疏**。换而言之，**权重$$w_j = 0$$意味着特征$$x_ij$$被抛弃，因此$$L_1$$也可以用来做特征选择**。  
+值得注意的是，以上过程可以通过矩阵形式求解。
 
 **坐标下降求解过程**
 
@@ -60,10 +60,12 @@ tags:
 2. 计算$$z_j$$
 3. 迭代求解
 
+```
   for j = 0, 1, ..., D:
     计算$$\rho_j$$
     计算$$\hat{w}_j$$
     选择变化幅度最大的维度更新$$w_j$$
+```
 
 除了坐标下降求解外，LASSO回归求解方法还有**前行选择、前向梯度和最小角回归算法**
 
