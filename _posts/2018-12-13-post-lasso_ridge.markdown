@@ -44,7 +44,7 @@ tags:
 于是对$$LASSO(w)$$求导可得：  
 <center>$$\frac{\partial LASSO}{\partial w_j} = 2w_jz_j - 2\rho_j + \left\{ \begin{array}{lll} -\lambda, & w_j < 0 \\ [-\lambda, \lambda], & w_j = 0 \\ \lambda, & w_j > 0 \end{array}\right.$$</center>  
 化简得  
-<center>$$\frac{\partial LASSO}{\partial w_j} = \left\{ \begin{array}{lll} 2z_jw_j - 2\rho - \lambda, & w_j < 0 \\ [-2\rho_j - \lambda, -2\rho_j + lambda], & w_j = 0 \\ 2z_jw_j - 2\rho_j + \lambda, & w_j > 0 \end{array}\right.$$</center>  
+<center>$$\frac{\partial LASSO}{\partial w_j} = \left\{ \begin{array}{lll} 2z_jw_j - 2\rho - \lambda, & w_j < 0 \\ [-2\rho_j - \lambda, -2\rho_j + \lambda], & w_j = 0 \\ 2z_jw_j - 2\rho_j + \lambda, & w_j > 0 \end{array}\right.$$</center>  
 令$$\frac{\partial LASSO}{\partial w_j} = 0$$求解可得  
 <center>$$\hat{w}_j = \left\{ \begin{array}{lll} (\rho_j + \frac{\lambda}{2})/z_j, & \rho_j < -\frac{\lambda}{2} \\ 0, & \rho_j \in [ -\frac{\lambda}{2},  \frac{\lambda}{2}] \\ (\rho_j - \frac{\lambda}{2})/z_j, & \rho_j > -\frac{\lambda}{2} \end{array}\right.$$</center>  
 **注意后面$$\rho_j$$跟$$\lambda$$范围限定隐含了$$z_j > 0$$**  
