@@ -39,7 +39,7 @@ tags:
   * 比如S='rab'，T='ra'，那么对于S删除或者加上‘b’都不会影响匹配数，而匹配数就是S='ra'和T='ra'的匹配，只有1种方法
   * 假设S='rabb'，T='rab'，那么对于S的最后一个'b'的处理就会影响匹配数了，利用**动态规划**的思想，有两种方法可以匹配：第一，删除最后一个'b'，那么匹配数就等于S='rab'与T='rab'的匹配数。第二，保留S的最后一个'b'，那么匹配数就等于S='ra'与T='ra'的匹配数。两者相加就是整体的匹配数
 
-对于S='rabbb'和T='rab'的处理，类似于爬楼梯的问题，要得到'rab','rabbb'首先爬完'ra',然后他可以选择爬到第一个'b'到重点，也可以通过爬过第二个'b'或者第三个'b'。
+对于S='rabbb'和T='rab'的处理，类似于爬楼梯的问题，要得到'rab','rabbb'首先爬完'ra',然后他可以选择爬到第一个'b'到终点，也可以通过爬过第二个'b'或者第三个'b'。
 
 # 算法
 
@@ -57,11 +57,11 @@ tags:
 ```python
 class Solution:
     def numDistinct(self, s, t):
+        """
         :type s: str
         :type t: str
         :rtype: int
         """
-        '''
         dp = [[0 for _ in range(len(t) + 1)] for k in range(len(s)+1)]
         for i in range(len(s)+1):
             dp[i][0] = 1
