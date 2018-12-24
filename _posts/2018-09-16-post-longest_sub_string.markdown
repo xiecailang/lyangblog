@@ -28,7 +28,7 @@ tags:
 2. 如果$$x_n != y_m$$，即最后一个元素不在最长公共子序列中。这里会有两个子问题，一个是找$$\mathrm{LCS}(X_{n - 1}, Y_m)$$，另外一个是$$\mathrm{LCS}(X_n, Y_{m - 1})$$，我们取这两个的最大值最为最长公共子序列
 
 因此，可以写出以下的递归公式  
-<center>$$LCS(X_i, Y_j) = \left\{  \begin{array}{ll}  0 & \text{if $i = 0$ or $y = 0$} \\  LCS(X_{i - 1}, Y_{j - 1}) & \text{if $X_i == Y_j$} \\  \mathrm{max}{LCS(X_{i - 1}, Y_j), LCS(X_i, Y_{j - 1})} & \text{else} \end{array}  \right.$$</center>  
+<center>$$LCS(X_i, Y_j) = \left\{  \begin{array}{ll}  0 & \text{if $i = 0$ or $y = 0$} \\  LCS(X_{i - 1}, Y_{j - 1}) & \text{if $X_i == Y_j$} \\  \mathrm{max}\{LCS(X_{i - 1}, Y_j), LCS(X_i, Y_{j - 1})\} & \text{else} \end{array}  \right.$$</center>  
 
 以上明显可以使用递归来实现，但是会产生重复求解问题，原问题包含了3个子问题
 
